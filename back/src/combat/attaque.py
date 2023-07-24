@@ -12,7 +12,7 @@ class Attaque(ABC):
     list_effet: list[Effet]
 
     @abstractmethod
-    def probabilite_toucher(self, *args) -> float:
+    def probabilite_toucher(self, *args, **kwargs) -> float:
         pass
 
     @abstractmethod
