@@ -1,9 +1,3 @@
-import pathlib
-import sys
-
-here = pathlib.Path(__file__).parent.resolve()
-sys.path.append(f"{here}/../../..")
-
 from back.src.figurine.caracteristique import Caracteristique
 
 
