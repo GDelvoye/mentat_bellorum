@@ -1,6 +1,6 @@
-from back.src.figurine.caracteristique import Caracteristique
 from back.src.combat.attaque import AttaqueCac
 from back.src.combat.defense import Defense
+from back.src.figurine.caracteristique import Caracteristique
 
 
 def test_probabilite_toucher():

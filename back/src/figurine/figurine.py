@@ -1,15 +1,15 @@
+import copy
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-import copy
 
+from back.src.combat.attaque import Attaque, AttaqueCac
 from back.src.effet.effet import Effet
 from back.src.equipement.arme.arme import Arme
 from back.src.figurine.caracteristique import Caracteristique
-from back.src.combat.attaque import Attaque, AttaqueCac
 
 
 @dataclass
-class Socle():
+class Socle:
     longueur: float
     largeur: float
 

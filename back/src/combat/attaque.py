@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from back.src.figurine.caracteristique import Caracteristique
-from back.src.effet.effet import Effet
+
 from back.src.combat.defense import Defense
+from back.src.effet.effet import Effet
+from back.src.figurine.caracteristique import Caracteristique
 
 
 @dataclass

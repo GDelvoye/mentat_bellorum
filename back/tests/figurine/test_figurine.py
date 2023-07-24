@@ -1,8 +1,8 @@
 from numpy import isclose
 
-from back.src.figurine.caracteristique import Caracteristique
-from back.src.figurine.figurine import Socle, Fantassin
 from back.src.equipement.arme.arme import Arme
+from back.src.figurine.caracteristique import Caracteristique
+from back.src.figurine.figurine import Fantassin, Socle
 
 
 def test_fantassin():
