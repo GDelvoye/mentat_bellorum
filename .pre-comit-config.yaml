@@ -1,4 +1,5 @@
-fail_fast: false
+default_language_version:
+    python: python3.11
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -49,8 +50,3 @@ repos:
         language: system
         types: [python]
         exclude: ^venv/ ^.git/ ^.vscode/ ^.DS_Store
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v2.37.0
-    hooks:
-      - id: pyupgrade #pyupgrade is a pre-commit hook that runs to check for issues in the code
-        args: [--py36-plus]
