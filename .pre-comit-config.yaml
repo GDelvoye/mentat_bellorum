@@ -24,11 +24,6 @@ repos:
         entry: black
         language: system
         types: [python]
-  - repo: https://github.com/asottile/blacken-docs
-    rev: v1.12.1
-    hooks:
-    -   id: blacken-docs #blacken-docs is a pre-commit hook that runs to check for issues in the docs
-        additional_dependencies: [black]
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
