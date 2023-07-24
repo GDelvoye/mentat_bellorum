@@ -15,6 +15,7 @@ class Attaque(ABC):
     def probabilite_toucher(self) -> float:
         pass
 
+    @abstractmethod
     def probabilite_blesser(self, defense: Defense) -> float:
         pass
 
