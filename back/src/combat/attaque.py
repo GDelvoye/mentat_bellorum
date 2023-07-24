@@ -12,16 +12,16 @@ class Attaque(ABC):
     list_effet: list[Effet]
 
     @abstractmethod
-    def probabilite_toucher(self):
+    def probabilite_toucher(self) -> float:
         pass
 
-    def probabilite_blesser(self, defense: Defense):
+    def probabilite_blesser(self, defense: Defense) -> float:
         pass
 
 
 class AttaqueCac(Attaque):
-    def probabilite_toucher(self, defense: Defense):
+    def probabilite_toucher(self, defense: Defense) -> float:
         return self.caracteristique.capa_combat - defense.caracteristique.capa_combat
 
-    def probabilite_blesser(self, defense: Defense):
+    def probabilite_blesser(self, defense: Defense) -> float:
         return super().probabilite_blesser(defense)
