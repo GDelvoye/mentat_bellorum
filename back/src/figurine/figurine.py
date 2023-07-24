@@ -2,7 +2,7 @@ import copy
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from back.src.combat.attaque import Attaque, AttaqueCac
+from back.src.combat.attaque import AttaqueCac
 from back.src.effet.effet import Effet
 from back.src.equipement.arme.arme import Arme
 from back.src.figurine.caracteristique import Caracteristique
@@ -23,13 +23,13 @@ class Figurine(ABC):
     socle: Socle
 
     @abstractmethod
-    def liste_attaque(self, liste_arme: list[Arme]) -> list[Attaque]:
+    def liste_attaque(self, liste_arme: list[Arme]) -> list[AttaqueCac]:
         pass
 
 
 @dataclass
 class Fantassin(Figurine):
-    def liste_attaque(self, liste_arme: list[Arme]) -> list[Attaque]:
+    def liste_attaque(self, liste_arme: list[Arme]) -> list[AttaqueCac]:
         liste_attaque = []
         caracteristique_avec_equipement = copy.deepcopy(self.caracteristique_de_base)
         for arme in liste_arme:
