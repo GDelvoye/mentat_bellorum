@@ -1,27 +1,34 @@
 from numpy import isclose
 
 from back.src.equipement.arme.arme import Arme
+from back.src.equipement.armure.armure import Armure
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.figurine.figurine import Fantassin, Socle
 
 
 def test_fantassin():
     # Given
-    caracteristique_fantassin = Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7)
+    caracteristique_fantassin = Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7, 7, 7)
     liste_arme = [
         Arme(
             "arme",
-            Caracteristique(0, 1, 0, 2, 0, 1, 0, 3, 0),
+            Caracteristique(0, 1, 0, 2, 0, 1, 0, 3, 0, 7, 7),
             [],
         )
     ]
     liste_effet = []
     socle = Socle(30, 45.6)
+    armure = Armure(
+        "armure",
+        Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6),
+        [],
+    )
     # When
     fantassin = Fantassin(
         "fantassin",
         caracteristique_fantassin,
         liste_arme,
+        armure,
         liste_effet,
         socle,
     )
@@ -33,25 +40,31 @@ def test_fantassin():
 
 def test_liste_attaque_fantassin():
     # Given
-    caracteristique_fantassin = Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7)
+    caracteristique_fantassin = Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7, 7, 7)
     liste_arme = [
         Arme(
             "deux arme de base",
-            Caracteristique(0, 0, 0, 0, 0, 0, 0, 1, 0),
+            Caracteristique(0, 0, 0, 0, 0, 0, 0, 1, 0, 7, 7),
             [],
         ),
         Arme(
             "arme à deux mains",
-            Caracteristique(0, 0, 0, 2, 0, 0, 0, 0, 0),
+            Caracteristique(0, 0, 0, 2, 0, 0, 0, 0, 0, 7, 7),
             ["attaque en dernier"],
         ),
     ]
+    armure = Armure(
+        "armure",
+        Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6),
+        [],
+    )
     liste_effet = []
     socle = Socle(30, 45.6)
     fantassin = Fantassin(
         "fantassin",
         caracteristique_fantassin,
         liste_arme,
+        armure,
         liste_effet,
         socle,
     )
