@@ -25,4 +25,4 @@ class AttaqueCac(Attaque):
         return self.caracteristique.capa_combat - defense.caracteristique.capa_combat
 
     def probabilite_blesser(self, defense: Defense) -> float:
-        return super().probabilite_blesser(defense)
+        return 1

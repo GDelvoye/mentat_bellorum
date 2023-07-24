@@ -23,7 +23,7 @@ class Figurine(ABC):
     socle: Socle
 
     @abstractmethod
-    def liste_attaque(self):
+    def liste_attaque(self, liste_arme: list[Arme]) -> list[Attaque]:
         pass
 
 
