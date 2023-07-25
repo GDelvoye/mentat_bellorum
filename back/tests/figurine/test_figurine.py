@@ -1,6 +1,3 @@
-import pytest
-from numpy import isclose
-
 from back.src.effet.effet import Effet
 from back.src.equipement.equipement import Arme, Armure, TypeArme
 from back.src.figurine.caracteristique import Caracteristique
@@ -19,7 +16,7 @@ figurine = Fantassin(
         Arme(
             "arme à deux mains",
             Caracteristique(0, 0, 0, 2, 0, 0, 0, 0, 0, 7, 7),
-            ["attaque en dernier"],
+            [Effet("attaque en dernier")],
             TypeArme.arme_deux_mains,
         ),
     ],
@@ -86,7 +83,7 @@ def test_get_liste_effet_avec_equipement():
         [figurine.liste_arme[1]]
     )
     # Then
-    assert liste_effet_avec_equipement[0] == "attaque en dernier"
+    assert liste_effet_avec_equipement[0].nom == "attaque en dernier"
 
 
 def test_figurine_equipee_liste_attaque():
