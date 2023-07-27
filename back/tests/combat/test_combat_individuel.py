@@ -8,7 +8,6 @@ from back.src.combat.combat_individuel import (
     jet_pour_toucher_cac,
     probabilite_de_blesser,
     probabilite_de_rater_sa_sauvegarde,
-    probabilite_de_rater_sa_sauvegarde_invunerable,
     probabilite_de_toucher_cac,
     probabilite_une_attaque_fait_perdre_un_point_de_vie,
 )
@@ -102,6 +101,11 @@ testdata_proba_blesser = [
 
 
 @pytest.mark.parametrize("f_att, e_def, expected", testdata_proba_blesser)
+
+
+
+
+
 def test_probabilite_de_blesser(
     f_att: int,
     e_def: int,
