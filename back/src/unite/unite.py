@@ -28,3 +28,26 @@ class Unite:
 
     def ajout_effet(self):
         pass
+
+    def declaration_de_charge(self, unite_adverse):
+        # return UniteCombat(copy.self, copy.unite_adverse)
+        pass
+
+
+def declaration_de_charge(unite_1, unite_2):
+    # return UniteCombat()
+    pass
+
+
+@dataclass
+class UniteCombat:
+    liste_unite: list  # ou alors
+
+    round: int
+    liste_effet: list
+
+    def resultat_round(self):
+        pass
+
+    def round_suivant(self):
+        pass
