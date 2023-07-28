@@ -7,17 +7,17 @@ from dataclasses import dataclass
 class Caracteristique:
     """Basic carac."""
 
-    mouvement: int
-    capa_combat: int
-    capa_tir: int
-    force: int
-    endurance: int
-    point_de_vie: int
-    initiative: int
-    attaque: int
-    commandement: int
-    sauvegarde: int
-    sauvegarde_invulnerable: int
+    mouvement: int = 0
+    capa_combat: int = 0
+    capa_tir: int = 0
+    force: int = 0
+    endurance: int = 0
+    point_de_vie: int = 0
+    initiative: int = 0
+    attaque: int = 0
+    commandement: int = 0
+    sauvegarde: int = 7
+    sauvegarde_invulnerable: int = 7
 
     def __add__(self, carac: Caracteristique) -> Caracteristique:
         return Caracteristique(

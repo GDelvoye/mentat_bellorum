@@ -15,8 +15,18 @@ figurine = Fantassin(
         ),
         Arme(
             "arme à deux mains",
-            Caracteristique(0, 0, 0, 2, 0, 0, 0, 0, 0, 7, 7),
-            [Effet("attaque en dernier")],
+            Caracteristique(force=2),
+            [
+                Effet(
+                    "attaque en dernier",
+                    Caracteristique(),
+                    Caracteristique(),
+                    [],
+                    [],
+                    [],
+                    [],
+                )
+            ],
             TypeArme.arme_deux_mains,
         ),
     ],

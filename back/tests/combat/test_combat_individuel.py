@@ -101,11 +101,6 @@ testdata_proba_blesser = [
 
 
 @pytest.mark.parametrize("f_att, e_def, expected", testdata_proba_blesser)
-
-
-
-
-
 def test_probabilite_de_blesser(
     f_att: int,
     e_def: int,
