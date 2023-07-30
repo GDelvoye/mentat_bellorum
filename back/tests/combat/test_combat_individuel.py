@@ -3,6 +3,8 @@ from numpy import isclose
 
 from back.src.combat.attaque import AttaqueCac
 from back.src.combat.combat_individuel import (
+    dict_nb_pv_perdu_probabilite,
+    dict_probabilite_coup_fatal,
     jet_de_sauvegarde,
     jet_pour_blesser,
     jet_pour_toucher_cac,
@@ -146,3 +148,54 @@ def test_probabilite_une_attaque_fait_perdre_un_point_de_vie():
     )
     # Then
     assert isclose(result, 1 / 18)
+
+
+def test_dict_nb_pv_perdu_probabilite():
+    # Given
+    attaque = AttaqueCac(
+        Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7, 7, 7),
+        [],
+    )
+    carac_defenseur = Caracteristique(4, 4, 4, 4, 4, 2, 4, 2, 8, 4, 5)
+    # When
+    result = dict_nb_pv_perdu_probabilite(
+        attaque,
+        carac_defenseur,
+        ["attaque_empoisonnee"],
+    )
+    # Then
+    assert isclose(result[1], 1 / 27 + 1 / 18)
+
+
+def test_dict_probabilite_coup_fatal():
+    # Given
+    attaque = AttaqueCac(
+        Caracteristique(4, 3, 3, 3, 3, 1, 3, 1, 7, 7, 7),
+        [],
+    )
+    carac_defenseur = Caracteristique(4, 4, 4, 4, 4, 2, 4, 2, 8, 4, 5)
+    # When
+    result = dict_probabilite_coup_fatal(
+        attaque,
+        carac_defenseur,
+    )
+    # Then
+    assert isclose(result[1], 1 / 36)
+    assert isclose(result[2], 1 / 18)
+
+
+def test_dict_probabilite_coup_fatal_force_faible_endu_forte():
+    # Given
+    attaque = AttaqueCac(
+        Caracteristique(4, 3, 3, 1, 3, 1, 3, 1, 7, 7, 7),
+        [],
+    )
+    carac_defenseur = Caracteristique(4, 4, 4, 4, 10, 2, 4, 2, 8, 4, 5)
+    # When
+    result = dict_probabilite_coup_fatal(
+        attaque,
+        carac_defenseur,
+    )
+    # Then
+    assert isclose(result[1], 0)
+    assert isclose(result[2], 1 / 18)

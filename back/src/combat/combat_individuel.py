@@ -103,3 +103,115 @@ def probabilite_une_attaque_fait_perdre_un_point_de_vie(
         caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
     )
     return probabilite
+
+
+def dict_probabilite_attaque_empoisonne(
+    attaque: AttaqueCac,
+    caracteristique_avec_equipement_defenseur: Caracteristique,
+) -> dict[int, float]:
+    probabilite_blesser = probabilite_de_toucher_cac(
+        attaque.caracteristique.capa_combat,
+        caracteristique_avec_equipement_defenseur.capa_combat,
+    )
+    probabilite_toucher_poison = 1 / 6
+    probabilite_toucher_normal = probabilite_blesser - probabilite_toucher_poison
+
+    probabilite_de_blesser_normal = probabilite_de_blesser(
+        attaque.caracteristique.force,
+        caracteristique_avec_equipement_defenseur.endurance,
+    )
+
+    probabilite_de_blesser_empoisonnement = 1
+
+    probabilite_blesser = (
+        probabilite_toucher_normal * probabilite_de_blesser_normal
+        + probabilite_toucher_poison * probabilite_de_blesser_empoisonnement
+    )
+
+    probabilite_final = (
+        probabilite_blesser
+        * probabilite_de_rater_sa_sauvegarde(
+            attaque.caracteristique.force,
+            caracteristique_avec_equipement_defenseur.sauvegarde,
+            0,
+        )
+        * probabilite_de_rater_sa_sauvegarde_invunerable(
+            caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
+        )
+    )
+
+    return {
+        1: probabilite_final,
+    }
+
+
+def dict_probabilite_coup_fatal(
+    attaque: AttaqueCac,
+    caracteristique_avec_equipement_defenseur: Caracteristique,
+) -> dict[int, float]:
+    probabilite = 1.0
+
+    probabilite *= probabilite_de_toucher_cac(
+        attaque.caracteristique.capa_combat,
+        caracteristique_avec_equipement_defenseur.capa_combat,
+    )
+
+    probabilite_de_blesser_classique = probabilite_de_blesser(
+        attaque.caracteristique.capa_combat,
+        caracteristique_avec_equipement_defenseur.endurance,
+    )
+
+    probabilite_de_blesser_sans_6 = max(0, probabilite_de_blesser_classique - 1 / 6)
+
+    probabilite_sans_coup_fatal = (
+        probabilite
+        * probabilite_de_blesser_sans_6
+        * probabilite_de_rater_sa_sauvegarde(
+            attaque.caracteristique.force,
+            caracteristique_avec_equipement_defenseur.sauvegarde,
+            0,
+        )
+        * probabilite_de_rater_sa_sauvegarde_invunerable(
+            caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
+        )
+    )
+
+    probabilite_avec_coup_fatal = (
+        probabilite
+        * 1
+        / 6
+        * probabilite_de_rater_sa_sauvegarde_invunerable(
+            caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
+        )
+    )
+
+    return {
+        1: probabilite_sans_coup_fatal,
+        caracteristique_avec_equipement_defenseur.point_de_vie: probabilite_avec_coup_fatal,
+    }
+
+
+def dict_nb_pv_perdu_probabilite(
+    attaque: AttaqueCac,
+    caracteristique_avec_equipement_defenseur: Caracteristique,
+    liste_nom_effet_valide_attaquant: list[str],
+) -> dict[int, float]:
+    """Probabilité d'infliger la perte d'un point de vie lors d'une attaque cac."""
+    if "attaque_empoisonnee" in liste_nom_effet_valide_attaquant:
+        return dict_probabilite_attaque_empoisonne(
+            attaque,
+            caracteristique_avec_equipement_defenseur,
+        )
+    elif "coup_fatal" in liste_nom_effet_valide_attaquant:
+        return dict_probabilite_coup_fatal(
+            attaque,
+            caracteristique_avec_equipement_defenseur,
+        )
+
+    else:
+        return {
+            1: probabilite_une_attaque_fait_perdre_un_point_de_vie(
+                attaque,
+                caracteristique_avec_equipement_defenseur,
+            )
+        }

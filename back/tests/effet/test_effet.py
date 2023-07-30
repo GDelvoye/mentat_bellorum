@@ -12,6 +12,7 @@ def test_is_effet_valide_suppresseur_false():
         [],
         [],
         ["attaque_enflammee"],
+        [],
     )
     liste_effet_allie = ["tenace", "attaque_enflammee"]
     liste_effet_adverse = ["charge", "peur", "attaque_enflammee"]
@@ -31,6 +32,7 @@ def test_is_effet_valide_suppresseur_true():
         [],
         [],
         ["attaque_enflammee"],
+        [],
     )
     liste_effet_allie = ["tenace", "attaque_enflammee"]
     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
@@ -47,6 +49,7 @@ def test_is_effet_valide_necessaire_false():
         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
         Caracteristique(),
         ["charge"],
+        [],
         [],
         [],
         [],
@@ -69,6 +72,7 @@ def test_is_effet_valide_necessaire_true_allie():
         [],
         [],
         [],
+        [],
     )
     liste_effet_allie = ["tenace", "attaque_enflammee", "charge"]
     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
@@ -88,6 +92,7 @@ def test_is_effet_valide_combat_deux_rangs():
         [],
         ["charge", "de_flanc", "de_dos"],
         ["flanc", "dos"],
+        [],
     )
     liste_effet_allie = ["tenace", "attaque_enflammee", "position_rang_2"]
     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
