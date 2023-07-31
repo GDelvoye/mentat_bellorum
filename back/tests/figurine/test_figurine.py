@@ -11,6 +11,7 @@ figurine = Fantassin(
             "deux arme de base",
             Caracteristique(0, 0, 0, 0, 0, 0, 0, 1, 0, 7, 7),
             [],
+            [],
             TypeArme.arme_deux_mains,
         ),
         Arme(
@@ -28,6 +29,7 @@ figurine = Fantassin(
                     set(),
                 )
             ],
+            [],
             TypeArme.arme_deux_mains,
         ),
     ],

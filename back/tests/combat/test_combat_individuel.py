@@ -162,6 +162,7 @@ def test_dict_nb_pv_perdu_probabilite():
         attaque,
         carac_defenseur,
         ["attaque_empoisonnee"],
+        [],
     )
     # Then
     assert isclose(result[1], 1 / 27 + 1 / 18)

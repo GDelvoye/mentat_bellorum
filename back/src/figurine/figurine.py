@@ -74,7 +74,7 @@ class Figurine:
                     )
                 )
             return liste_attaque
-        return None
+        return []
 
     def get_figurine_equipee(self, liste_arme: list[Arme]) -> Optional[FigurineEquipee]:
         if not is_liste_arme_valid(liste_arme):
@@ -123,10 +123,11 @@ class Fantassin(Figurine):
                 )
             return FigurineEquipee(
                 self.nom,
+                self.caracteristique_de_base,
                 self.get_caracteristique_avec_equipement(liste_arme),
+                liste_attaque,
                 self.get_liste_effet_avec_equipement(liste_arme),
                 self.socle,
-                liste_attaque,
             )
         return None
 

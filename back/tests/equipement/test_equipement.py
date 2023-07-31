@@ -8,30 +8,30 @@ caracteristique = Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 testdata = [
     (
         [
-            Arme("", caracteristique, [], TypeArme.arme_base),
-            Arme("", caracteristique, [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
         ],
         True,
     ),
     (
         [
-            Arme("", caracteristique, [], TypeArme.arme_une_main),
-            Arme("", caracteristique, [], TypeArme.bouclier),
+            Arme("", caracteristique, [], [], TypeArme.arme_une_main),
+            Arme("", caracteristique, [], [], TypeArme.bouclier),
         ],
         True,
     ),
     (
         [
-            Arme("", caracteristique, [], TypeArme.arme_deux_mains),
-            Arme("", caracteristique, [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_deux_mains),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
         ],
         False,
     ),
     (
         [
-            Arme("", caracteristique, [], TypeArme.arme_base),
-            Arme("", caracteristique, [], TypeArme.arme_base),
-            Arme("", caracteristique, [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
+            Arme("", caracteristique, [], [], TypeArme.arme_base),
         ],
         False,
     ),
@@ -41,13 +41,13 @@ testdata = [
     ),
     (
         [
-            Arme("", caracteristique, [], TypeArme.bouclier),
+            Arme("", caracteristique, [], [], TypeArme.bouclier),
         ],
         False,
     ),
     (
         [
-            Arme("", caracteristique, [], TypeArme.arme_deux_mains),
+            Arme("", caracteristique, [], [], TypeArme.arme_deux_mains),
         ],
         True,
     ),
