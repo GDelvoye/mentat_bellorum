@@ -1,7 +1,13 @@
 from typing import Optional
 
+from back.base_logger import logger
 from back.src.combat.attaque import AttaqueCac
 from back.src.figurine.caracteristique import Caracteristique
+from back.src.parser.type import EnumEffet
+
+
+def probabilite_relance(probabilite: float) -> float:
+    return probabilite + (1 - probabilite) * probabilite
 
 
 def jet_pour_toucher_cac(capa_combat_attaquant: int, capa_combat_defenseur: int) -> int:
@@ -109,17 +115,19 @@ def dict_probabilite_attaque_empoisonne(
     attaque: AttaqueCac,
     caracteristique_avec_equipement_defenseur: Caracteristique,
 ) -> dict[int, float]:
-    probabilite_blesser = probabilite_de_toucher_cac(
+    logger.info(EnumEffet.attaque_empoisonnee.value)
+    probabilite_toucher = probabilite_de_toucher_cac(
         attaque.caracteristique.capa_combat,
         caracteristique_avec_equipement_defenseur.capa_combat,
     )
     probabilite_toucher_poison = 1 / 6
-    probabilite_toucher_normal = probabilite_blesser - probabilite_toucher_poison
-
+    probabilite_toucher_normal = probabilite_toucher - probabilite_toucher_poison
+    logger.info(f"toucher: {probabilite_toucher_normal}")
     probabilite_de_blesser_normal = probabilite_de_blesser(
         attaque.caracteristique.force,
         caracteristique_avec_equipement_defenseur.endurance,
     )
+    logger.info(f"blesser: {probabilite_de_blesser_normal}")
 
     probabilite_de_blesser_empoisonnement = 1
 
@@ -127,6 +135,7 @@ def dict_probabilite_attaque_empoisonne(
         probabilite_toucher_normal * probabilite_de_blesser_normal
         + probabilite_toucher_poison * probabilite_de_blesser_empoisonnement
     )
+    logger.info(f"toucher/blesser tot {probabilite_blesser}")
 
     probabilite_final = (
         probabilite_blesser
@@ -139,6 +148,7 @@ def dict_probabilite_attaque_empoisonne(
             caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
         )
     )
+    logger.info(f"final: {probabilite_final}")
 
     return {
         1: probabilite_final,
@@ -191,19 +201,68 @@ def dict_probabilite_coup_fatal(
     }
 
 
+def dict_probabilite_attaque_enflammee_contre_inflammable(
+    attaque: AttaqueCac,
+    caracteristique_avec_equipement_defenseur: Caracteristique,
+) -> dict[int, float]:
+    logger.info(EnumEffet.attaque_enflammee.value)
+    probabilite_toucher = probabilite_de_toucher_cac(
+        attaque.caracteristique.capa_combat,
+        caracteristique_avec_equipement_defenseur.capa_combat,
+    )
+    probabilite_de_blesser_normal = probabilite_de_blesser(
+        attaque.caracteristique.force,
+        caracteristique_avec_equipement_defenseur.endurance,
+    )
+    logger.info(f"blesser: {probabilite_de_blesser_normal}")
+
+    probabilite_blesser = probabilite_relance(probabilite_de_blesser_normal)
+    logger.info(f"blesser inflammable: {probabilite_blesser}")
+
+    probabilite_final = (
+        probabilite_toucher
+        * probabilite_blesser
+        * probabilite_de_rater_sa_sauvegarde(
+            attaque.caracteristique.force,
+            caracteristique_avec_equipement_defenseur.sauvegarde,
+            0,
+        )
+        * probabilite_de_rater_sa_sauvegarde_invunerable(
+            caracteristique_avec_equipement_defenseur.sauvegarde_invulnerable,
+        )
+    )
+    logger.info(f"final: {probabilite_final}")
+
+    return {
+        1: probabilite_final,
+    }
+
+
 def dict_nb_pv_perdu_probabilite(
     attaque: AttaqueCac,
     caracteristique_avec_equipement_defenseur: Caracteristique,
     liste_nom_effet_valide_attaquant: list[str],
+    liste_nom_effet_valide_defenseur: list[str],
 ) -> dict[int, float]:
     """Probabilité d'infliger la perte d'un point de vie lors d'une attaque cac."""
-    if "attaque_empoisonnee" in liste_nom_effet_valide_attaquant:
+    if EnumEffet.attaque_empoisonnee.value in liste_nom_effet_valide_attaquant:
+        logger.info(EnumEffet.attaque_empoisonnee.value)
         return dict_probabilite_attaque_empoisonne(
             attaque,
             caracteristique_avec_equipement_defenseur,
         )
-    elif "coup_fatal" in liste_nom_effet_valide_attaquant:
+    elif EnumEffet.coup_fatal.value in liste_nom_effet_valide_attaquant:
+        logger.info(EnumEffet.coup_fatal.value)
         return dict_probabilite_coup_fatal(
+            attaque,
+            caracteristique_avec_equipement_defenseur,
+        )
+    elif (
+        EnumEffet.attaque_enflammee.value in liste_nom_effet_valide_attaquant
+        and EnumEffet.inflammable.value in liste_nom_effet_valide_defenseur
+    ):
+        logger.info(EnumEffet.attaque_enflammee.value)
+        return dict_probabilite_attaque_enflammee_contre_inflammable(
             attaque,
             caracteristique_avec_equipement_defenseur,
         )

@@ -18,7 +18,7 @@ class Socle:
 
 
 @dataclass
-class Figurine(ABC):
+class Figurine:
     nom: str
     caracteristique_de_base: Caracteristique
     liste_arme: list[Arme]
@@ -46,14 +46,60 @@ class Figurine(ABC):
             liste_effet_avec_equipement += arme.liste_effet
         return liste_effet_avec_equipement
 
+    def get_caracteristique_effective(
+        self, liste_arme_valide: list[Arme]
+    ) -> Caracteristique:
+        caracteristique_effective = self.get_caracteristique_avec_equipement(
+            liste_arme_valide
+        )
+        for effet in self.liste_effet:
+            caracteristique_effective += effet.modificateur_carac_allie
+        return caracteristique_effective
+
+    def get_liste_attaque(self, liste_arme: list[Arme]) -> list[AttaqueCac]:
+        if is_liste_arme_valid(liste_arme):
+            caracteristique_avec_equipement = self.get_caracteristique_avec_equipement(
+                liste_arme
+            )
+            liste_effet_avec_equipement = self.get_liste_effet_avec_equipement(
+                liste_arme
+            )
+            nombre_attaque = caracteristique_avec_equipement.attaque
+            liste_attaque = []
+            for i in range(0, nombre_attaque):
+                liste_attaque.append(
+                    AttaqueCac(
+                        caracteristique_avec_equipement,
+                        liste_effet_avec_equipement,
+                    )
+                )
+            return liste_attaque
+        return None
+
+    def get_figurine_equipee(self, liste_arme: list[Arme]) -> Optional[FigurineEquipee]:
+        if not is_liste_arme_valid(liste_arme):
+            return None
+        liste_attaque = self.get_liste_attaque(liste_arme)
+        carac_avec_equipement = self.get_caracteristique_avec_equipement(liste_arme)
+        liste_effet_avec_equipement = self.get_liste_effet_avec_equipement(liste_arme)
+        return FigurineEquipee(
+            self.nom,
+            self.caracteristique_de_base,
+            carac_avec_equipement,
+            liste_attaque,
+            liste_effet_avec_equipement,
+            self.socle,
+        )
+
 
 @dataclass
-class FigurineEquipee(ABC):
+class FigurineEquipee:
     nom: str
-    caracteristique_avec_equipement: Caracteristique
+    caracteristique_de_base: Caracteristique
+    caracteristique_effective: Caracteristique
+    liste_attaque: list[AttaqueCac]
     liste_effet: list[Effet]
     socle: Socle
-    liste_attaque: list[AttaqueCac]
 
 
 @dataclass

@@ -52,4 +52,4 @@ def create_dict_effet():
     return dict
 
 
-dict = create_dict_effet()
+dict_effet = create_dict_effet()

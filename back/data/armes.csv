@@ -1,0 +1,14 @@
+nom,effet,bonus_force,bonus_att,necessaire_allie
+arme_de_base,,,,
+deux_armes_de_base,arme_a_deux_mains,,1,
+lance,combat_sur_deux_rangs,,,
+lance_montee,,1,,charge
+lance_de_cavalerie,,2,,charge
+arme_lourde,arme_a_deux_mains;frappe_en_dernier,2,,
+arme_lourde_montee,arme_a_deux_mains;frappe_en_dernier,1,,
+hallebarde,arme_a_deux_mains;combat_sur_deux_rangs,1,,
+fleau,arme_a_deux_mains;,2,,premier_tour
+morgenstern,,1,,premier_tour
+marteau_de_cavalerie,arme_a_deux_mains;frappe_en_dernier,2,,premier_tour
+marteau_de_cavalerie2,arme_a_deux_mains;frappe_en_dernier,1,,deuxieme_tour
+pistolet,,,1,

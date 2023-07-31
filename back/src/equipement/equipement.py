@@ -35,6 +35,7 @@ class TypeArme(Enum):
 
 @dataclass
 class Arme(Equipement):
+    liste_effet_necessaire_allie: list[Effet]
     type_arme: TypeArme
     type_equipement = TypeEquipement.arme
 

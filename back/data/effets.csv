@@ -1,5 +1,7 @@
 nom,necessaire_allie,necessaire_adverse,suppresseur_allie,suppresseur_adverse,effet_inclu
 attaque_empoisonnee,,,,insensible_au_poison,
+arme_a_deux_mains,,,,,
+combat_sur_deux_rangs,,,,,
 insensible_au_poison,,,,,
 aura,,,,degat_magique,
 degat_magique,,,,,
@@ -25,3 +27,5 @@ attaquee_de_flanc,,attaque_de_flanc,,,flanquee
 attaquee_de_dos,,attaque_de_dos,,,flanquee
 bonus_de_rang,,,tirailleur;flanquee;,,
 charge,premier_tour;,,,,
+premier_tour,,,,,
+deuxieme_tour,,,,,
