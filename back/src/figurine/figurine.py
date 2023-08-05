@@ -30,18 +30,51 @@ class Figurine:
     def avec_equipement(self, liste_arme: list[Arme]) -> Optional[FigurineEquipee]:
         pass
 
+    def get_dict_effet_intrinseque(self, liste_arme: list[Arme]) -> dict[str, Effet]:
+        dict_intrinseque = {}
+        for effet in self.liste_effet:
+            dict_intrinseque[effet.nom] = effet
+        if self.armure != []:
+            for effet in self.armure.liste_effet:
+                dict_intrinseque[effet.nom] = effet
+        for arme in liste_arme:
+            for effet in arme.liste_effet:
+                dict_intrinseque[effet.nom] = effet
+        return dict_intrinseque
+
+    def get_caracteristique_intrinseque(
+        self, liste_arme: list[Arme]
+    ) -> Caracteristique:
+        carac_intrinseque = self.get_caracteristique_avec_equipement(liste_arme)
+        dict_effet_intrinseque = self.get_dict_effet_intrinseque(liste_arme)
+        for effet in dict_effet_intrinseque.values():
+            carac_intrinseque += effet.modificateur_carac_allie
+        return carac_intrinseque
+
+    def get_modification_caracteristique_adverse_intrinseque(
+        self,
+        liste_arme: list[Arme],
+    ) -> Caracteristique:
+        modif_carac_intrinseque = Caracteristique()
+        dict_effet_intrinseque = self.get_dict_effet_intrinseque(liste_arme)
+        for effet in dict_effet_intrinseque.values():
+            modif_carac_intrinseque += effet.modificateur_carac_adverse
+        return modif_carac_intrinseque
+
     def get_caracteristique_avec_equipement(
         self, liste_arme: list[Arme]
     ) -> Caracteristique:
         caracteristique_avec_equipement = copy.deepcopy(self.caracteristique_de_base)
-        caracteristique_avec_equipement += self.armure.modification_caracteristique
+        if self.armure != []:
+            caracteristique_avec_equipement += self.armure.modification_caracteristique
         for arme in liste_arme:
             caracteristique_avec_equipement += arme.modification_caracteristique
         return caracteristique_avec_equipement
 
     def get_liste_effet_avec_equipement(self, liste_arme: list[Arme]) -> list[Effet]:
         liste_effet_avec_equipement = self.liste_effet.copy()
-        liste_effet_avec_equipement += self.armure.liste_effet
+        if self.armure != []:
+            liste_effet_avec_equipement += self.armure.liste_effet
         for arme in liste_arme:
             liste_effet_avec_equipement += arme.liste_effet
         return liste_effet_avec_equipement
@@ -92,14 +125,22 @@ class Figurine:
         )
 
 
-@dataclass
 class FigurineEquipee:
-    nom: str
-    caracteristique_de_base: Caracteristique
-    caracteristique_effective: Caracteristique
-    liste_attaque: list[AttaqueCac]
-    liste_effet: list[Effet]
-    socle: Socle
+    def __init__(
+        self,
+        nom: str,
+        caracteristique_de_base: Caracteristique,
+        caracteristique_effective: Caracteristique,
+        liste_attaque: list[AttaqueCac],
+        liste_effet: list[Effet],
+        socle: Socle,
+    ):
+        self.nom = nom
+        self.caracteristique_de_base = caracteristique_de_base
+        self.caracteristique_effective = caracteristique_effective
+        self.liste_attaque = liste_attaque
+        self.liste_effet = liste_effet
+        self.socle = socle
 
 
 @dataclass

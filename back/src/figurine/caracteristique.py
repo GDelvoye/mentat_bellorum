@@ -34,6 +34,11 @@ class Caracteristique:
             min(self.sauvegarde_invulnerable, carac.sauvegarde_invulnerable),
         )
 
+    def __repr__(self):
+        repr = " M|CC|CT| F| E|PV| I| A|Cd|Sv|Si\n"
+        repr += f" {self.mouvement}| {self.capa_combat}| {self.capa_tir}| {self.force}| {self.endurance}| {self.point_de_vie}| {self.initiative}| {self.attaque}| {self.commandement}| {self.sauvegarde}| {self.sauvegarde_invulnerable}"
+        return repr
+
 
 def addition_caracteristique(
     carac1: int, carac2: int, minimum: int, maximum: int
