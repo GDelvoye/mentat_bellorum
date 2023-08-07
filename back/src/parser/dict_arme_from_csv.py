@@ -76,7 +76,7 @@ def create_arme(nom_arme: str):
                 set(),
                 set(),
                 liste_nom_effet_associe,
-            )
+            ),
         )
     else:
         print(f"{nom_arme} pas dans csv")

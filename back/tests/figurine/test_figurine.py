@@ -28,7 +28,7 @@ figurine = Fantassin(
                         set(),
                         set(),
                         set(),
-                    )
+                    ),
                 )
             ],
             [],

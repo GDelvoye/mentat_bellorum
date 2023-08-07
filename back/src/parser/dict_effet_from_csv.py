@@ -41,7 +41,7 @@ def create_effet(nom_effet: str):
                 set(liste_suppresseur_allie),
                 set(liste_suppresseur_adverse),
                 set(liste_effet_inclu),
-            )
+            ),
         )
     else:
         print(f"{nom_effet} pas dans csv")

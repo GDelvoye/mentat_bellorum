@@ -14,6 +14,7 @@ class Dependances:
     suppresseur_adverse: set[str]
     effet_inclu: set[str]
 
+
 @dataclass
 class EffetTheorique:
     """
@@ -124,10 +125,8 @@ def get_dict_effet_pratique_from_liste_nom(
 ) -> dict[str, EffetPratique]:
     dict_effet_pratique = {nom: EffetPratique(nom) for nom in liste_nom}
     for nom, effet_pratique in dict_effet_pratique.items():
-        set_dependances_pratiques = (
-            get_set_dependances_pratiques_from_liste_nom(
-                nom, liste_nom, dict_effet_theorique
-            )
+        set_dependances_pratiques = get_set_dependances_pratiques_from_liste_nom(
+            nom, liste_nom, dict_effet_theorique
         )
         liste_dependance_effective = [
             dict_effet_pratique[nom] for nom in set_dependances_pratiques

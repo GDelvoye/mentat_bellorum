@@ -1,7 +1,9 @@
-from back.src.effet.effet import (EffetTheorique,
-                                  get_dict_effet_pratique_from_liste_nom,
-                                  get_set_dependances_pratiques_from_liste_nom,
-                                  get_set_effet_pratique_valide_from_liste_nom)
+from back.src.effet.effet import (
+    EffetTheorique,
+    get_dict_effet_pratique_from_liste_nom,
+    get_set_dependances_pratiques_from_liste_nom,
+    get_set_effet_pratique_valide_from_liste_nom,
+)
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet

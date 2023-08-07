@@ -3,11 +3,16 @@ from numpy import isclose
 
 from back.src.combat.attaque import AttaqueCac
 from back.src.combat.combat_individuel import (
-    dict_nb_pv_perdu_probabilite, dict_probabilite_coup_fatal,
-    jet_de_sauvegarde, jet_pour_blesser, jet_pour_toucher_cac,
-    probabilite_de_blesser, probabilite_de_rater_sa_sauvegarde,
+    dict_nb_pv_perdu_probabilite,
+    dict_probabilite_coup_fatal,
+    jet_de_sauvegarde,
+    jet_pour_blesser,
+    jet_pour_toucher_cac,
+    probabilite_de_blesser,
+    probabilite_de_rater_sa_sauvegarde,
     probabilite_de_toucher_cac,
-    probabilite_une_attaque_fait_perdre_un_point_de_vie)
+    probabilite_une_attaque_fait_perdre_un_point_de_vie,
+)
 from back.src.figurine.caracteristique import Caracteristique
 
 testdata_jet_pour_toucher_cac = [
