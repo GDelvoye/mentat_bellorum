@@ -130,3 +130,17 @@ def get_dict_effet_pratique_from_liste_nom(
         ]
         effet_pratique.add_dependance(liste_dependance_effective)
     return dict_effet_pratique
+
+
+def get_set_effet_pratique_valide_from_liste_nom(
+    liste_nom: list[str],
+    dict_effet_theorique: dict[str, EffetTheorique],
+) -> Set[str]:
+    set_effet_pratique_valide: Set[str] = set()
+    dict_effet_pratique = get_dict_effet_pratique_from_liste_nom(
+        liste_nom, dict_effet_theorique
+    )
+    for nom, effet_pratique in dict_effet_pratique.items():
+        if effet_pratique.is_valide:
+            set_effet_pratique_valide.update(nom)
+    return set_effet_pratique_valide
