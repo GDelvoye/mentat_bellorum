@@ -30,7 +30,9 @@ class Figurine:
     def avec_equipement(self, liste_arme: list[Arme]) -> Optional[FigurineEquipee]:
         pass
 
-    def get_dict_effet_intrinseque(self, liste_arme: list[Arme]) -> dict[str, EffetTheorique]:
+    def get_dict_effet_intrinseque(
+        self, liste_arme: list[Arme]
+    ) -> dict[str, EffetTheorique]:
         dict_intrinseque = {}
         for effet in self.liste_effet:
             dict_intrinseque[effet.nom] = effet
@@ -71,7 +73,9 @@ class Figurine:
             caracteristique_avec_equipement += arme.modification_caracteristique
         return caracteristique_avec_equipement
 
-    def get_liste_effet_avec_equipement(self, liste_arme: list[Arme]) -> list[EffetTheorique]:
+    def get_liste_effet_avec_equipement(
+        self, liste_arme: list[Arme]
+    ) -> list[EffetTheorique]:
         liste_effet_avec_equipement = self.liste_effet.copy()
         if self.armure != []:
             liste_effet_avec_equipement += self.armure.liste_effet
