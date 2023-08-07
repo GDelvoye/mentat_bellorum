@@ -1,10 +1,10 @@
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
 
 def test_is_effet_valide_suppresseur_false():
     # Given
-    effet = Effet(
+    effet = EffetTheorique(
         "regeneration",
         Caracteristique(sauvegarde_invulnerable=4),
         Caracteristique(),
@@ -24,7 +24,7 @@ def test_is_effet_valide_suppresseur_false():
 
 def test_is_effet_valide_suppresseur_true():
     # Given
-    effet = Effet(
+    effet = EffetTheorique(
         "regeneration",
         Caracteristique(sauvegarde_invulnerable=4),
         Caracteristique(),
@@ -44,7 +44,7 @@ def test_is_effet_valide_suppresseur_true():
 
 def test_is_effet_valide_necessaire_false():
     # Given
-    effet = Effet(
+    effet = EffetTheorique(
         "horde",
         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
         Caracteristique(),
@@ -64,7 +64,7 @@ def test_is_effet_valide_necessaire_false():
 
 def test_is_effet_valide_necessaire_true_allie():
     # Given
-    effet = Effet(
+    effet = EffetTheorique(
         "horde",
         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
         Caracteristique(),
@@ -84,7 +84,7 @@ def test_is_effet_valide_necessaire_true_allie():
 
 def test_is_effet_valide_combat_deux_rangs():
     # Given
-    effet = Effet(
+    effet = EffetTheorique(
         "attaque_sur_deux_rangs_lance",
         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
         Caracteristique(),

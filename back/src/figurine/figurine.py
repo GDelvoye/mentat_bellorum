@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from back.src.combat.attaque import AttaqueCac
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.equipement.equipement import Arme, Armure, is_liste_arme_valid
 from back.src.figurine.caracteristique import Caracteristique
 
@@ -23,14 +23,14 @@ class Figurine:
     caracteristique_de_base: Caracteristique
     liste_arme: list[Arme]
     armure: Armure
-    liste_effet: list[Effet]
+    liste_effet: list[EffetTheorique]
     socle: Socle
 
     @abstractmethod
     def avec_equipement(self, liste_arme: list[Arme]) -> Optional[FigurineEquipee]:
         pass
 
-    def get_dict_effet_intrinseque(self, liste_arme: list[Arme]) -> dict[str, Effet]:
+    def get_dict_effet_intrinseque(self, liste_arme: list[Arme]) -> dict[str, EffetTheorique]:
         dict_intrinseque = {}
         for effet in self.liste_effet:
             dict_intrinseque[effet.nom] = effet
@@ -71,7 +71,7 @@ class Figurine:
             caracteristique_avec_equipement += arme.modification_caracteristique
         return caracteristique_avec_equipement
 
-    def get_liste_effet_avec_equipement(self, liste_arme: list[Arme]) -> list[Effet]:
+    def get_liste_effet_avec_equipement(self, liste_arme: list[Arme]) -> list[EffetTheorique]:
         liste_effet_avec_equipement = self.liste_effet.copy()
         if self.armure != []:
             liste_effet_avec_equipement += self.armure.liste_effet
@@ -132,7 +132,7 @@ class FigurineEquipee:
         caracteristique_de_base: Caracteristique,
         caracteristique_effective: Caracteristique,
         liste_attaque: list[AttaqueCac],
-        liste_effet: list[Effet],
+        liste_effet: list[EffetTheorique],
         socle: Socle,
     ):
         self.nom = nom

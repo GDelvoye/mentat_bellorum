@@ -6,7 +6,7 @@ from back.src.figurine.caracteristique import Caracteristique
 
 
 @dataclass
-class Effet:
+class EffetTheorique:
     """
     Gère les effets d'armes, de psychologie, de charge.
     """

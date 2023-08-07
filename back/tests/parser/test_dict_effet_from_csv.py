@@ -1,4 +1,4 @@
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet
 
@@ -10,7 +10,7 @@ def test_dict_effet():
 
 def test_dict_effet_dependance():
     for enum in EnumEffet:
-        effet: Effet = dict_effet[enum.value]
+        effet: EffetTheorique = dict_effet[enum.value]
         all_dependance = set()
         all_dependance.union(effet.set_nom_effet_inclu)
         all_dependance.union(effet.set_nom_effet_necessaire_adverse)

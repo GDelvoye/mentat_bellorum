@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
 csv_file = os.path.join("back", "data", "effets.csv")
@@ -31,7 +31,7 @@ def create_effet(nom_effet: str):
             nom_effet, "suppresseur_adverse"
         )
         liste_effet_inclu = recover_set_from_cell(nom_effet, "effet_inclu")
-        return Effet(
+        return EffetTheorique(
             nom_effet,
             Caracteristique(),
             Caracteristique(),

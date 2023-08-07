@@ -1,4 +1,4 @@
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.equipement.equipement import Arme
 from back.src.parser.dict_arme_from_csv import dict_arme
 from back.src.parser.dict_effet_from_csv import dict_effet
@@ -14,7 +14,7 @@ def test_dict_arme():
 
 def test_dict_arme_dependance():
     for enum in EnumArme:
-        arme: Effet = dict_arme[enum.value]
+        arme: EffetTheorique = dict_arme[enum.value]
         all_dependance = set()
         all_dependance.union(arme.set_nom_effet_inclu)
         all_dependance.union(arme.set_nom_effet_necessaire_adverse)

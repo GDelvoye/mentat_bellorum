@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.parser.dict_effet_from_csv import dict_effet
 
@@ -66,7 +66,7 @@ def create_arme(nom_arme: str):
         liste_nom_necessaire_allie = recover_set_from_cell(nom_arme, "necessaire_allie")
         bonus_force = recover_value_from_cell(nom_arme, "bonus_force")
         bonus_att = recover_value_from_cell(nom_arme, "bonus_att")
-        return Effet(
+        return EffetTheorique(
             nom_arme,
             Caracteristique(force=bonus_force, attaque=bonus_att),
             Caracteristique(),
@@ -80,7 +80,7 @@ def create_arme(nom_arme: str):
         print(f"{nom_arme} pas dans csv")
 
 
-def create_dict_arme() -> dict[str, Effet]:
+def create_dict_arme() -> dict[str, EffetTheorique]:
     dict = {}
     for n in df_arme["nom"].values:
         dict[n] = create_arme(n)

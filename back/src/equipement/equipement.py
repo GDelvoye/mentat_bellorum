@@ -4,7 +4,7 @@ from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
 
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
 
@@ -12,7 +12,7 @@ from back.src.figurine.caracteristique import Caracteristique
 class Equipement(ABC):
     nom: str
     modification_caracteristique: Caracteristique
-    liste_effet: list[Effet]
+    liste_effet: list[EffetTheorique]
 
 
 class TypeEquipement(Enum):
@@ -35,7 +35,7 @@ class TypeArme(Enum):
 
 @dataclass
 class Arme(Equipement):
-    liste_effet_necessaire_allie: list[Effet]
+    liste_effet_necessaire_allie: list[EffetTheorique]
     type_arme: TypeArme
     type_equipement = TypeEquipement.arme
 

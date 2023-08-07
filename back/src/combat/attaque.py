@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from back.src.combat.defense import Defense
-from back.src.effet.effet import Effet
+from back.src.effet.effet import EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
 
 @dataclass
 class Attaque(ABC):
     caracteristique: Caracteristique
-    list_effet: list[Effet]
+    list_effet: list[EffetTheorique]
 
     @abstractmethod
     def probabilite_toucher(self, *args, **kwargs) -> float:
