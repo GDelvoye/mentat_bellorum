@@ -117,16 +117,18 @@ def get_dict_effet_pratique_from_liste_nom(
     liste_nom: list[str],
     dict_effet_theorique: dict[str, EffetTheorique],
 ):
-    d = {nom: EffetPratique(nom) for nom in liste_nom}
-    for nom, node in d.items():
-        liste_nom_dependance_effective = (
+    dict_effet_pratique = {nom: EffetPratique(nom) for nom in liste_nom}
+    for nom, effet_pratique in dict_effet_pratique.items():
+        set_dependances_pratiques = (
             get_set_dependances_pratiques_directes_from_liste_nom(
                 nom, liste_nom, dict_effet_theorique
             )
         )
-        liste_dependance_effective = [d[nom] for nom in liste_nom_dependance_effective]
-        node.add_dependance(liste_dependance_effective)
-    return d
+        liste_dependance_effective = [
+            dict_effet_pratique[nom] for nom in set_dependances_pratiques
+        ]
+        effet_pratique.add_dependance(liste_dependance_effective)
+    return dict_effet_pratique
 
 
 # @dataclass
