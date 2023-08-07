@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import EffetTheorique, Dependances
+from back.src.effet.effet import Dependances, EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
 csv_file = os.path.join("back", "data", "effets.csv")

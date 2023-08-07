@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import EffetTheorique, Dependances
+from back.src.effet.effet import Dependances, EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.parser.dict_effet_from_csv import dict_effet
 
