@@ -94,11 +94,6 @@ class EffetPratique:
             )
             == set()
         ):
-            for dependance in self.dependances:
-                #  print("uuu")
-                #  print(node.nom)
-                if dependance.is_valide is False:
-                    self.is_valide = False
             self.is_valide = True
         else:
             self.is_valide = False
