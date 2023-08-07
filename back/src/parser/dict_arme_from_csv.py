@@ -71,9 +71,9 @@ def create_arme(nom_arme: str):
             Caracteristique(force=bonus_force, attaque=bonus_att),
             Caracteristique(),
             liste_nom_necessaire_allie,
-            [],
-            [],
-            [],
+            set(),
+            set(),
+            set(),
             liste_nom_effet_associe,
         )
     else:

@@ -56,14 +56,16 @@ class EffetPratique:
     def add_dependance(self, liste_effet_pratique: list[EffetPratique]) -> None:
         self.dependances.update(liste_effet_pratique)
 
-    def check_is_valide(self, dict_effet_theorique: dict[str, EffetTheorique]) -> None:
+    def check_is_valide(
+        self, dict_effet_theorique: dict[str, EffetTheorique]
+    ) -> Optional[bool]:
         """
         Vérifie récursivement si un effet pratique est valide.
         I.e. Si dans le set de dépendances de l'effet pratique, toutes les
         dépendances théoriques sont vérifiées.
         """
         dict_validite_des_dependances_directes: dict[str, Optional[bool]] = {
-            effet_pratique.nom: effet_pratique.check_is_valide()
+            effet_pratique.nom: effet_pratique.check_is_valide(dict_effet_theorique)
             for effet_pratique in self.dependances
         }
         # print("------------")
@@ -77,7 +79,6 @@ class EffetPratique:
         set_dependances_theoriques_directes = (
             effet_theorique.set_nom_effet_necessaire_allie
         )
-        # diff = set_dependances_pratiques_directes_valides.difference(set_dependances_theoriques_directes)
         if (
             set_dependances_pratiques_directes_valides.difference(
                 set_dependances_theoriques_directes
@@ -105,7 +106,7 @@ def get_set_dependances_pratiques_directes_from_liste_nom(
     nom: str,
     liste_nom: list[str],
     dict_effet_theorique: dict[str, EffetTheorique],
-):
+) -> Set[str]:
     effet_theorique: EffetTheorique = dict_effet_theorique[nom]
     set_dependance = set(liste_nom).intersection(
         effet_theorique.set_nom_effet_necessaire_allie
@@ -116,7 +117,7 @@ def get_set_dependances_pratiques_directes_from_liste_nom(
 def get_dict_effet_pratique_from_liste_nom(
     liste_nom: list[str],
     dict_effet_theorique: dict[str, EffetTheorique],
-):
+) -> dict[str, EffetPratique]:
     dict_effet_pratique = {nom: EffetPratique(nom) for nom in liste_nom}
     for nom, effet_pratique in dict_effet_pratique.items():
         set_dependances_pratiques = (
@@ -129,14 +130,3 @@ def get_dict_effet_pratique_from_liste_nom(
         ]
         effet_pratique.add_dependance(liste_dependance_effective)
     return dict_effet_pratique
-
-
-# @dataclass
-# class ListEffetFigurine:
-#     liste_effet: list[Effet]
-
-#     def get_list_effet_valide(self):
-#         pass
-
-#     def ajout_effet(self):
-#         pass
