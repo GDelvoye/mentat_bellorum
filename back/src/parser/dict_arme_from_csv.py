@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import EffetTheorique
+from back.src.effet.effet import EffetTheorique, Dependances
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.parser.dict_effet_from_csv import dict_effet
 
@@ -70,11 +70,13 @@ def create_arme(nom_arme: str):
             nom_arme,
             Caracteristique(force=bonus_force, attaque=bonus_att),
             Caracteristique(),
-            liste_nom_necessaire_allie,
-            set(),
-            set(),
-            set(),
-            liste_nom_effet_associe,
+            Dependances(
+                liste_nom_necessaire_allie,
+                set(),
+                set(),
+                set(),
+                liste_nom_effet_associe,
+            )
         )
     else:
         print(f"{nom_arme} pas dans csv")

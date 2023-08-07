@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from back.src.effet.effet import EffetTheorique
+from back.src.effet.effet import EffetTheorique, Dependances
 from back.src.figurine.caracteristique import Caracteristique
 
 csv_file = os.path.join("back", "data", "effets.csv")
@@ -35,11 +35,13 @@ def create_effet(nom_effet: str):
             nom_effet,
             Caracteristique(),
             Caracteristique(),
-            set(liste_necessaire_allie),
-            set(liste_necessaire_adverse),
-            set(liste_suppresseur_allie),
-            set(liste_suppresseur_adverse),
-            set(liste_effet_inclu),
+            Dependances(
+                set(liste_necessaire_allie),
+                set(liste_necessaire_adverse),
+                set(liste_suppresseur_allie),
+                set(liste_suppresseur_adverse),
+                set(liste_effet_inclu),
+            )
         )
     else:
         print(f"{nom_effet} pas dans csv")

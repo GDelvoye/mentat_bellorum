@@ -1,4 +1,4 @@
-from back.src.effet.effet import EffetTheorique
+from back.src.effet.effet import EffetTheorique, Dependances
 from back.src.equipement.equipement import Arme, Armure, TypeArme
 from back.src.figurine.caracteristique import Caracteristique
 from back.src.figurine.figurine import Fantassin, Socle
@@ -22,11 +22,13 @@ figurine = Fantassin(
                     "attaque en dernier",
                     Caracteristique(),
                     Caracteristique(),
-                    set(),
-                    set(),
-                    set(),
-                    set(),
-                    set(),
+                    Dependances(
+                        set(),
+                        set(),
+                        set(),
+                        set(),
+                        set(),
+                    )
                 )
             ],
             [],
