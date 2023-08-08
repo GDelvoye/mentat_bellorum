@@ -1,4 +1,5 @@
 import os
+from typing import Set
 
 import pandas as pd
 
@@ -9,7 +10,7 @@ csv_file = os.path.join("back", "data", "effets.csv")
 df_effet = pd.read_csv(csv_file)
 
 
-def recover_set_from_cell(nom_effet, nom_colonne):
+def recover_set_from_cell(nom_effet: str, nom_colonne: str) -> Set:
     df_nom = df_effet[df_effet["nom"] == nom_effet]
     if df_nom.isnull()[nom_colonne].values[0]:
         return set()

@@ -1,10 +1,6 @@
-from back.src.effet.effet import (
-    EffetTheorique,
-    get_dict_effet_pratique_from_liste_nom,
-    get_set_dependances_pratiques_from_liste_nom,
-    get_set_effet_pratique_valide_from_liste_nom,
-)
-from back.src.figurine.caracteristique import Caracteristique
+from back.src.effet.effet import (Dependances, EffetPratique, get_dependances,
+                                  get_dict_effet_pratique_from_liste_nom,
+                                  get_set_effet_pratique_valide_from_liste_nom)
 from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet
 
@@ -108,39 +104,43 @@ from back.src.parser.type import EnumEffet
 #     assert result
 
 
-def test_get_set_dependances_pratiques_from_liste_nom():
+def test_dependances_get_all():
     # Given
-    nom = EnumEffet.horde.value
-    liste_nom = [
-        EnumEffet.horde.value,
-        EnumEffet.charge.value,
-        EnumEffet.premier_tour.value,
-    ]
-    dict_effet_theorique = dict_effet
+    dependance = Dependances(set("a"), set(), set(["b", "c"]), set(), set())
     # When
-    result = get_set_dependances_pratiques_from_liste_nom(
-        nom=nom,
-        liste_nom=liste_nom,
-        dict_effet_theorique=dict_effet_theorique,
-    )
-    assert result == set([EnumEffet.charge.value])
+    result = dependance.all_dependances()
+    # Then
+    assert result == set(["c", "b", "a"])
 
 
-def test_get_set_dependances_pratiques_from_liste_nom_vide():
+def test_dependance_is_valide_necessaire_allie():
     # Given
-    nom = EnumEffet.horde.value
-    liste_nom = [
-        EnumEffet.horde.value,
-        EnumEffet.premier_tour.value,
-    ]
-    dict_effet_theorique = dict_effet
+    dependance_a_tester = Dependances(set(["a", "b"]), set(), set(), set(), set())
+    dependance_de_reference = Dependances(set("a"), set(), set(), set(), set())
     # When
-    result = get_set_dependances_pratiques_from_liste_nom(
-        nom=nom,
-        liste_nom=liste_nom,
-        dict_effet_theorique=dict_effet_theorique,
-    )
-    assert result == set()
+    result = dependance_a_tester.is_valide_necessaire_allie(dependance_de_reference)
+    # Then
+    assert result is True
+
+
+def test_dependance_is_valide_suppresseur_allie():
+    # Given
+    dependance_a_tester = Dependances(set(), set(), set(["a", "b"]), set(), set())
+    dependance_de_reference = Dependances(set(), set(), set("a"), set(), set())
+    # When
+    result = dependance_a_tester.is_valide_suppresseur_allie(dependance_de_reference)
+    # Then
+    assert result is False
+
+
+def test_dependance_is_valide():
+    # Given
+    dependance_a_tester = Dependances(set(["e"]), set(), set(["c", "b"]), set(), set())
+    dependance_de_reference = Dependances(set(), set(), set("a"), set(), set())
+    # When
+    result = dependance_a_tester.is_valide_suppresseur_allie(dependance_de_reference)
+    # Then
+    assert result is True
 
 
 def test_get_dict_effet_pratique_from_liste_nom():
@@ -152,10 +152,10 @@ def test_get_dict_effet_pratique_from_liste_nom():
     dict_effet_theorique = dict_effet
     # When
     result = get_dict_effet_pratique_from_liste_nom(
-        liste_nom=liste_nom,
+        set_nom=liste_nom,
         dict_effet_theorique=dict_effet_theorique,
-    )
-    assert len(result[EnumEffet.horde.value].dependances) == 1
+    )[EnumEffet.horde.value]
+    assert len(result.set_des_effets_pratiques_dependances) == 1
 
 
 def test_get_set_effet_pratique_valide_from_liste_nom_set_sans_recurrence():
@@ -167,7 +167,7 @@ def test_get_set_effet_pratique_valide_from_liste_nom_set_sans_recurrence():
     dict_effet_theorique = dict_effet
     # When
     result = get_set_effet_pratique_valide_from_liste_nom(
-        liste_nom=liste_nom,
+        set_nom=liste_nom,
         dict_effet_theorique=dict_effet_theorique,
     )
     # Then
@@ -183,7 +183,7 @@ def test_get_set_effet_pratique_valide_from_liste_nom_set_vide():
     dict_effet_theorique = dict_effet
     # When
     result = get_set_effet_pratique_valide_from_liste_nom(
-        liste_nom=liste_nom,
+        set_nom=liste_nom,
         dict_effet_theorique=dict_effet_theorique,
     )
     # Then
@@ -199,23 +199,52 @@ def test_get_set_effet_pratique_valide_from_liste_nom_set_valide():
     ]
     # When
     result = get_set_effet_pratique_valide_from_liste_nom(
-        liste_nom=liste_nom,
+        set_nom=liste_nom,
         dict_effet_theorique=dict_effet,
     )
     # Then
     assert result == set(liste_nom)
 
 
-# def test_get_set_effet_pratique_valide_from_liste_nom_deuxieme_et_premier_tour():
-#     # Given
-#     liste_nom = [
-#         EnumEffet.premier_tour.value,
-#         EnumEffet.deuxieme_tour.value,
-#     ]
-#     # When
-#     result = get_set_effet_pratique_valide_from_liste_nom(
-#         liste_nom=liste_nom,
-#         dict_effet_theorique=dict_effet,
-#     )
-#     # Then
-#     assert result == set([EnumEffet.deuxieme_tour.value])
+def test_get_dependance_necessaire_allie():
+    # Given
+    liste_de_noms_allie = [EnumEffet.charge.value, EnumEffet.premier_tour.value]
+    dict_effet_theorique = dict_effet
+    # When
+    result = get_dependances(
+        EnumEffet.charge.value,
+        dict_effet_theorique=dict_effet_theorique,
+        set_de_noms_allie=liste_de_noms_allie,
+    )
+    # Then
+    assert result.necessaire_allie == set([EnumEffet.premier_tour.value])
+
+
+def test_get_dependance_suppresseur_allie():
+    # Given
+    liste_de_noms_allie = [EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value]
+    dict_effet_theorique = dict_effet
+    # When
+    result = get_dependances(
+        EnumEffet.premier_tour.value,
+        dict_effet_theorique=dict_effet_theorique,
+        set_de_noms_allie=liste_de_noms_allie,
+    )
+    # Then
+    assert result.suppresseur_allie == set([EnumEffet.deuxieme_tour.value])
+
+
+def test_get_set_effet_pratique_valide_from_liste_nom_deuxieme_et_premier_tour():
+    # Given
+    liste_nom = [
+        EnumEffet.horde.value,
+        EnumEffet.premier_tour.value,
+        EnumEffet.deuxieme_tour.value,
+    ]
+    # When
+    result = get_set_effet_pratique_valide_from_liste_nom(
+        set_nom=liste_nom,
+        dict_effet_theorique=dict_effet,
+    )
+    # Then
+    assert result == set([EnumEffet.deuxieme_tour.value])
