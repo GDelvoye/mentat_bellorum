@@ -90,11 +90,14 @@ def test_update_ensemble_noms_avec_effets_inclus():
     # Given
     noms_effets = set([EnumEffet.attaque_enflammee.value])
     # When
-    result = update_ensemble_noms_avec_effets_inclus(
-        noms_effets=noms_effets
-    )
+    result = update_ensemble_noms_avec_effets_inclus(noms_effets=noms_effets)
     # Then
-    assert result == set([EnumEffet.attaque_enflammee.value, EnumEffet.attaque_enflammee_double_degat.value])
+    assert result == set(
+        [
+            EnumEffet.attaque_enflammee.value,
+            EnumEffet.attaque_enflammee_double_degat.value,
+        ]
+    )
 
 
 def test_get_dict_effet_pratique_avant_ckeck_is_valide():
