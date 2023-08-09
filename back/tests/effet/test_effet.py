@@ -320,6 +320,11 @@ testdata_get_set_effet = [
         set([EnumEffet.attaque_enflammee.value]),
         set(),
     ),
+    (
+        set([EnumEffet.aura.value]),
+        set([EnumEffet.degat_magique.value]),
+        set(),
+    ),
 ]
 
 
