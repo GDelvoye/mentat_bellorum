@@ -24,6 +24,19 @@ class Dependances:
         all_dependances.update(self.effet_inclu)
         return all_dependances
 
+    def all_dependances_allies(self) -> Set[str]:
+        all_dependances_allies = set()
+        all_dependances_allies.update(self.necessaire_allie)
+        all_dependances_allies.update(self.suppresseur_allie)
+        all_dependances_allies.update(self.effet_inclu)
+        return all_dependances_allies
+
+    def all_dependances_adverses(self) -> Set[str]:
+        all_dependances_adverses = set()
+        all_dependances_adverses.update(self.necessaire_adverse)
+        all_dependances_adverses.update(self.suppresseur_adverse)
+        return all_dependances_adverses
+
     def is_valide_necessaire_allie(self, reference_dependance: Dependances) -> bool:
         if (
             self.necessaire_allie.intersection(reference_dependance.necessaire_allie)
@@ -99,7 +112,7 @@ class EffetPratique:
     def __init__(self, nom: str):
         self.nom = nom
         self.is_valide: Optional[bool] = None
-        self.set_des_effets_pratiques_dependances: Set[EffetPratique] = set()
+        self.effets_pratiques_directements_dependants: Set[EffetPratique] = set()
         self.dependances: Dependances = Dependances(set(), set(), set(), set(), set())
 
     def __repr__(self):
@@ -108,7 +121,7 @@ class EffetPratique:
     def update_set_effet_pratique_dependances(
         self, liste_effet_pratique: list[EffetPratique]
     ) -> None:
-        self.set_des_effets_pratiques_dependances.update(liste_effet_pratique)
+        self.effets_pratiques_directements_dependants.update(liste_effet_pratique)
 
     def check_is_valide(
         self,
@@ -118,18 +131,22 @@ class EffetPratique:
         I.e. Si dans le set de dépendances de l'effet pratique, toutes les
         dépendances théoriques sont vérifiées.
         """
+        if self.is_valide is not None:
+            return self.is_valide
+
         dict_validite_des_dependances: dict[str, Optional[bool]] = {
             effet_pratique.nom: effet_pratique.check_is_valide()
-            for effet_pratique in self.set_des_effets_pratiques_dependances
+            for effet_pratique in self.effets_pratiques_directements_dependants
         }
 
-        set_dependances_pratiques_valides = get_noms_effets_pratiques_valides(
+        ensemble_des_noms_directements_dependants_valides = get_noms_effets_pratiques_valides(
             dict_validite_des_dependances
         )
 
-        dependances_pratiques_valide = get_dependances(
+        dependances_pratiques_valide = get_dependances_from_ensembles_noms_effets(
             self.nom,
-            set_dependances_pratiques_valides,
+            ensemble_des_noms_directements_dependants_valides,
+            self.dependances.all_dependances_adverses(),
         )
         dict_effet_theorique = get_dict_effet_theorique()
         effet_theorique: EffetTheorique = dict_effet_theorique[self.nom]
@@ -143,7 +160,7 @@ class EffetPratique:
         return self.is_valide
 
 
-def get_dependances(
+def get_dependances_from_ensembles_noms_effets(
     nom: str,
     noms_effets_allies: Set[str],
     noms_effets_adverses: Set[str] = set(),
@@ -177,29 +194,29 @@ def get_noms_effets_pratiques_valides(
     return noms_effets_pratiques_valides
 
 
-def get_dict_effet_pratique_from_liste_nom(
+def get_dict_effet_pratique_avant_ckeck_is_valide(
     noms_effets_allies: Set[str],
     noms_effets_adverses: Set[str] = set(),
 ) -> dict[str, EffetPratique]:
     dict_effet_pratique = {nom: EffetPratique(nom) for nom in noms_effets_allies}
     for nom, effet_pratique in dict_effet_pratique.items():
-        effet_pratique.dependances = get_dependances(nom, noms_effets_allies, noms_effets_adverses)
-        set_noms_dependances_pratiques = effet_pratique.dependances.all_dependances()
-        liste_effet_pratique_dependance = [
-            dict_effet_pratique[nom] for nom in set_noms_dependances_pratiques
+        effet_pratique.dependances = get_dependances_from_ensembles_noms_effets(nom, noms_effets_allies, noms_effets_adverses)
+        noms_dependances_pratiques_allies = effet_pratique.dependances.all_dependances_allies()
+        effets_pratiques_allies_dependants = [
+            dict_effet_pratique[nom] for nom in noms_dependances_pratiques_allies
         ]
         effet_pratique.update_set_effet_pratique_dependances(
-            liste_effet_pratique_dependance
+            effets_pratiques_allies_dependants
         )
     return dict_effet_pratique
 
 
-def get_set_effet_pratique_valide_from_liste_nom(
+def get_ensemble_des_effet_pratique_valide_apres_check(
     noms_effets_allies: Set[str],
     noms_effets_adverses: Set[set] = set(),
 ) -> Set[str]:
     set_effet_pratique_valide: Set[str] = set()
-    dict_effet_pratique = get_dict_effet_pratique_from_liste_nom(
+    dict_effet_pratique = get_dict_effet_pratique_avant_ckeck_is_valide(
         noms_effets_allies, noms_effets_adverses
     )
     for nom, effet_pratique in dict_effet_pratique.items():
