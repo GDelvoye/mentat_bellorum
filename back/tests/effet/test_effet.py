@@ -216,6 +216,18 @@ testdata_get_set_effet = [
         set([EnumEffet.deuxieme_tour.value]),
     ),
     (
+        set(
+            [
+                EnumEffet.combat_sur_deux_rangs.value,
+                EnumEffet.charge.value,
+                EnumEffet.premier_tour.value,
+                EnumEffet.deuxieme_tour.value,
+            ]
+        ),
+        set(),
+        set([EnumEffet.combat_sur_deux_rangs.value, EnumEffet.deuxieme_tour.value]),
+    ),
+    (
         set([EnumEffet.regeneration.value]),
         set([EnumEffet.attaque_enflammee.value]),
         set(),
