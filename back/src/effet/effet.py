@@ -138,6 +138,18 @@ class EffetPratique:
         return self.is_valide
 
 
+def update_ensemble_noms_avec_effets_inclus(noms_effets: Set[str]) -> Set[str]:
+    """
+    Renvoie une liste de noms d'effets comprenants les effets inclus.
+    """
+    dict_effet_theorique = get_dict_effet_theorique()
+    noms_effets_update = noms_effets.copy()
+    for nom_effet in noms_effets:
+        effet_theorique: EffetTheorique = dict_effet_theorique[nom_effet]
+        noms_effets_update.update(effet_theorique.dependances.effet_inclu)
+    return noms_effets_update
+
+
 def get_dependances_from_ensembles_noms_effets(
     nom: str,
     noms_effets_allies: Set[str],

@@ -5,7 +5,8 @@ import pytest
 from back.src.effet.effet import (
     Dependances, get_dependances_from_ensembles_noms_effets,
     get_dict_effet_pratique_avant_ckeck_is_valide,
-    get_ensemble_des_effet_pratique_valide_apres_check)
+    get_ensemble_des_effet_pratique_valide_apres_check,
+    update_ensemble_noms_avec_effets_inclus)
 from back.src.parser.type import EnumEffet
 
 
@@ -83,6 +84,17 @@ def test_dependances_is_valide_method(
 ):
     result = dependances_a_tester.is_valide(dependances_de_reference)
     assert result is expected
+
+
+def test_update_ensemble_noms_avec_effets_inclus():
+    # Given
+    noms_effets = set([EnumEffet.attaque_enflammee.value])
+    # When
+    result = update_ensemble_noms_avec_effets_inclus(
+        noms_effets=noms_effets
+    )
+    # Then
+    assert result == set([EnumEffet.attaque_enflammee.value, EnumEffet.attaque_enflammee_double_degat.value])
 
 
 def test_get_dict_effet_pratique_avant_ckeck_is_valide():
