@@ -41,10 +41,22 @@ class Dependances:
         else:
             return False
 
+    def is_valide_suppresseur_adverse(self, reference_dependance: Dependances) -> bool:
+        if (
+            self.suppresseur_adverse.intersection(
+                reference_dependance.suppresseur_adverse
+            )
+            == set()
+        ):
+            return True
+        else:
+            return False
+
     def is_valide(self, reference_dependance: Dependances) -> bool:
         return bool(
             self.is_valide_necessaire_allie(reference_dependance)
             * self.is_valide_suppresseur_allie(reference_dependance)
+            * self.is_valide_suppresseur_adverse(reference_dependance)
         )
 
 

@@ -1,8 +1,12 @@
 import pytest
 
-from back.src.effet.effet import (Dependances, EffetPratique, get_dependances,
-                                  get_dict_effet_pratique_from_liste_nom,
-                                  get_set_effet_pratique_valide_from_liste_nom)
+from back.src.effet.effet import (
+    Dependances,
+    EffetPratique,
+    get_dependances,
+    get_dict_effet_pratique_from_liste_nom,
+    get_set_effet_pratique_valide_from_liste_nom,
+)
 from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet
 
@@ -115,7 +119,7 @@ def test_dependances_get_all():
     assert result == set(["c", "b", "a"])
 
 
-def test_dependance_is_valide_necessaire_allie():
+def test_dependances_is_valide_necessaire_allie():
     # Given
     dependance_a_tester = Dependances(set(["a", "b"]), set(), set(), set(), set())
     dependance_de_reference = Dependances(set("a"), set(), set(), set(), set())
@@ -125,7 +129,7 @@ def test_dependance_is_valide_necessaire_allie():
     assert result is True
 
 
-def test_dependance_is_valide_suppresseur_allie():
+def test_dependances_is_valide_suppresseur_allie():
     # Given
     dependance_a_tester = Dependances(set(), set(), set(["a", "b"]), set(), set())
     dependance_de_reference = Dependances(set(), set(), set("a"), set(), set())
@@ -135,14 +139,51 @@ def test_dependance_is_valide_suppresseur_allie():
     assert result is False
 
 
-def test_dependance_is_valide():
+def test_dependances_is_valide_suppresseur_adverse():
     # Given
-    dependance_a_tester = Dependances(set(["e"]), set(), set(["c", "b"]), set(), set())
-    dependance_de_reference = Dependances(set(), set(), set("a"), set(), set())
+    dependance_a_tester = Dependances(set(), set(), set(["a", "b"]), set("c"), set())
+    dependance_de_reference = Dependances(set(), set(), set("a"), set("d"), set())
     # When
-    result = dependance_a_tester.is_valide_suppresseur_allie(dependance_de_reference)
+    result = dependance_a_tester.is_valide_suppresseur_adverse(dependance_de_reference)
     # Then
     assert result is True
+
+
+testdata_dependances_is_valide_method = [
+    (
+        Dependances(set(), set(), set(["a", "b"]), set(), set()),
+        Dependances(set(), set(), set("a"), set(), set()),
+        False,
+    ),
+    (
+        Dependances(set(), set(), set(["a", "b"]), set("c"), set()),
+        Dependances(set(), set(), set("a"), set("d"), set()),
+        False,
+    ),
+    (
+        Dependances(set(["e"]), set(), set(["c", "b"]), set("e"), set()),
+        Dependances(set("e"), set(), set("a"), set("a"), set()),
+        True,
+    ),
+    (
+        Dependances(set(["e"]), set(), set(["c", "b"]), set("a"), set()),
+        Dependances(set("e"), set(), set("a"), set("a"), set()),
+        False,
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "dependances_a_tester, dependances_de_reference, expected",
+    testdata_dependances_is_valide_method,
+)
+def test_dependances_is_valide_method(
+    dependances_a_tester: Dependances,
+    dependances_de_reference: Dependances,
+    expected: bool,
+):
+    result = dependances_a_tester.is_valide(dependances_de_reference)
+    assert result is expected
 
 
 def test_get_dict_effet_pratique_from_liste_nom():
@@ -196,7 +237,7 @@ def test_get_dependances(
     assert result == set(liste_expected)
 
 
-def test_get_dependance_suppresseur_allie():
+def test_get_dependances_suppresseur_allie():
     # Given
     liste_de_noms_allie = [EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value]
     dict_effet_theorique = dict_effet
