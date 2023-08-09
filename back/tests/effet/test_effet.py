@@ -3,110 +3,10 @@ from typing import Set
 import pytest
 
 from back.src.effet.effet import (
-    Dependances, EffetPratique, get_dependances_from_ensembles_noms_effets,
+    Dependances, get_dependances_from_ensembles_noms_effets,
     get_dict_effet_pratique_avant_ckeck_is_valide,
     get_ensemble_des_effet_pratique_valide_apres_check)
-from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet
-
-# def test_is_effet_valide_suppresseur_false():
-#     # Given
-#     effet = EffetTheorique(
-#         "regeneration",
-#         Caracteristique(sauvegarde_invulnerable=4),
-#         Caracteristique(),
-#         [],
-#         [],
-#         [],
-#         ["attaque_enflammee"],
-#         [],
-#     )
-#     liste_effet_allie = ["tenace", "attaque_enflammee"]
-#     liste_effet_adverse = ["charge", "peur", "attaque_enflammee"]
-#     # When
-#     result = effet.is_valide(liste_effet_allie, liste_effet_adverse)
-#     # Then
-#     assert not result
-
-
-# def test_is_effet_valide_suppresseur_true():
-#     # Given
-#     effet = EffetTheorique(
-#         "regeneration",
-#         Caracteristique(sauvegarde_invulnerable=4),
-#         Caracteristique(),
-#         [],
-#         [],
-#         [],
-#         ["attaque_enflammee"],
-#         [],
-#     )
-#     liste_effet_allie = ["tenace", "attaque_enflammee"]
-#     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
-#     # When
-#     result = effet.is_valide(liste_effet_allie, liste_effet_adverse)
-#     # Then
-#     assert result
-
-
-# def test_is_effet_valide_necessaire_false():
-#     # Given
-#     effet = EffetTheorique(
-#         "horde",
-#         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
-#         Caracteristique(),
-#         ["charge"],
-#         [],
-#         [],
-#         [],
-#         [],
-#     )
-#     liste_effet_allie = ["tenace", "attaque_enflammee"]
-#     liste_effet_adverse = ["charge"]
-#     # When
-#     result = effet.is_valide(liste_effet_allie, liste_effet_adverse)
-#     # Then
-#     assert not result
-
-
-# def test_is_effet_valide_necessaire_true_allie():
-#     # Given
-#     effet = EffetTheorique(
-#         "horde",
-#         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
-#         Caracteristique(),
-#         ["charge"],
-#         [],
-#         [],
-#         [],
-#         [],
-#     )
-#     liste_effet_allie = ["tenace", "attaque_enflammee", "charge"]
-#     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
-#     # When
-#     result = effet.is_valide(liste_effet_allie, liste_effet_adverse)
-#     # Then
-#     assert result
-
-
-# def test_is_effet_valide_combat_deux_rangs():
-#     # Given
-#     effet = EffetTheorique(
-#         "attaque_sur_deux_rangs_lance",
-#         Caracteristique(0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4),
-#         Caracteristique(),
-#         ["position_rang_2"],
-#         [],
-#         ["charge", "de_flanc", "de_dos"],
-#         ["flanc", "dos"],
-#         [],
-#     )
-#     liste_effet_allie = ["tenace", "attaque_enflammee", "position_rang_2"]
-#     liste_effet_adverse = ["charge", "peur", "attaque_empoisonnee"]
-#     # When
-#     result = effet.is_valide(liste_effet_allie, liste_effet_adverse)
-#     # Then
-#     assert result
 
 
 def test_dependances_get_all():
@@ -185,7 +85,7 @@ def test_dependances_is_valide_method(
     assert result is expected
 
 
-def test_get_dict_effet_pratique_from_liste_nom():
+def test_get_dict_effet_pratique_avant_ckeck_is_valide():
     # Given
     noms_effets_allies = set(
         [
@@ -233,7 +133,7 @@ testdata_get_dependances = [
     "nom, noms_effets_allies, noms_effets_adverses, noms_effets_expected",
     testdata_get_dependances,
 )
-def test_get_dependances_check_all_dependances(
+def test_get_dependances__from_ensembles_noms_effets_check_all_dependances(
     nom: str,
     noms_effets_allies: Set[str],
     noms_effets_adverses: Set[str],
@@ -247,7 +147,7 @@ def test_get_dependances_check_all_dependances(
     assert result == noms_effets_expected
 
 
-def test_get_dependances_suppresseur_allie():
+def test_get_dependancess_from_ensembles_noms_effets_suppresseur_allie():
     # Given
     noms_effets_allies = set(
         [EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value]
@@ -332,7 +232,7 @@ testdata_get_set_effet = [
     "noms_effets_allies, noms_effets_adverses, noms_effets_expected",
     testdata_get_set_effet,
 )
-def test_get_set_effet_pratique_valide_from_liste_nom(
+def test_get_ensemble_des_effet_pratique_valide_apres_check(
     noms_effets_allies: Set[str],
     noms_effets_adverses: Set[str],
     noms_effets_expected: Set[str],

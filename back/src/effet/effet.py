@@ -85,28 +85,6 @@ class EffetTheorique:
     modificateur_carac_adverse: Caracteristique
     dependances: Dependances
 
-    # def is_valide(
-    #     self,
-    #     liste_nom_effet_allie: list[str],
-    #     liste_nom_effet_adverse: list[str],
-    # ) -> bool:
-    #     """
-    #     Vérifie si l'effet est valide avec les deux listes données.
-    #     """
-    #     if not set(self.set_nom_effet_necessaire_allie).issubset(
-    #         set(liste_nom_effet_allie)
-    #     ):
-    #         return False
-    #     if not set(self.set_nom_effet_necessaire_adverse).issubset(
-    #         set(liste_nom_effet_adverse)
-    #     ):
-    #         return False
-    #     if set(self.set_nom_effet_suppresseur_allie) & set(liste_nom_effet_allie):
-    #         return False
-    #     if set(self.set_nom_effet_suppresseur_adverse) & set(liste_nom_effet_adverse):
-    #         return False
-    #     return True
-
 
 class EffetPratique:
     def __init__(self, nom: str):
@@ -118,7 +96,7 @@ class EffetPratique:
     def __repr__(self):
         return self.nom
 
-    def update_set_effet_pratique_dependances(
+    def update_ensemble_des_effets_pratiques_directement_dependants(
         self, liste_effet_pratique: list[EffetPratique]
     ) -> None:
         self.effets_pratiques_directements_dependants.update(liste_effet_pratique)
@@ -140,7 +118,7 @@ class EffetPratique:
         }
 
         ensemble_des_noms_directements_dependants_valides = (
-            get_noms_effets_pratiques_valides(dict_validite_des_dependances)
+            get_noms_valides_from_dict_effet_pratique(dict_validite_des_dependances)
         )
 
         dependances_pratiques_valide = get_dependances_from_ensembles_noms_effets(
@@ -176,15 +154,15 @@ def get_dependances_from_ensembles_noms_effets(
     dependances_theoriques: Dependances = effet_theorique.dependances
     dependances_pratique = Dependances(
         noms_effets_allies.intersection(dependances_theoriques.necessaire_allie),
-        set(),
+        set(),  # a modifier 2.
         noms_effets_allies.intersection(dependances_theoriques.suppresseur_allie),
         noms_effets_adverses.intersection(dependances_theoriques.suppresseur_adverse),
-        set(),
+        set(),  # a modifier 1.
     )
     return dependances_pratique
 
 
-def get_noms_effets_pratiques_valides(
+def get_noms_valides_from_dict_effet_pratique(
     dict_validite_des_effets_pratiques: dict[str, Optional[bool]],
 ) -> Set[str]:
     noms_effets_pratiques_valides = set()
@@ -209,7 +187,7 @@ def get_dict_effet_pratique_avant_ckeck_is_valide(
         effets_pratiques_allies_dependants = [
             dict_effet_pratique[nom] for nom in noms_dependances_pratiques_allies
         ]
-        effet_pratique.update_set_effet_pratique_dependances(
+        effet_pratique.update_ensemble_des_effets_pratiques_directement_dependants(
             effets_pratiques_allies_dependants
         )
     return dict_effet_pratique
