@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Set
 
-from back.src.figurine.caracteristique import Caracteristique
 from back.src.api.api_dict_effet import get_dict_effet_theorique
+from back.src.figurine.caracteristique import Caracteristique
 
 
 @dataclass
@@ -139,8 +139,8 @@ class EffetPratique:
             for effet_pratique in self.effets_pratiques_directements_dependants
         }
 
-        ensemble_des_noms_directements_dependants_valides = get_noms_effets_pratiques_valides(
-            dict_validite_des_dependances
+        ensemble_des_noms_directements_dependants_valides = (
+            get_noms_effets_pratiques_valides(dict_validite_des_dependances)
         )
 
         dependances_pratiques_valide = get_dependances_from_ensembles_noms_effets(
@@ -200,8 +200,12 @@ def get_dict_effet_pratique_avant_ckeck_is_valide(
 ) -> dict[str, EffetPratique]:
     dict_effet_pratique = {nom: EffetPratique(nom) for nom in noms_effets_allies}
     for nom, effet_pratique in dict_effet_pratique.items():
-        effet_pratique.dependances = get_dependances_from_ensembles_noms_effets(nom, noms_effets_allies, noms_effets_adverses)
-        noms_dependances_pratiques_allies = effet_pratique.dependances.all_dependances_allies()
+        effet_pratique.dependances = get_dependances_from_ensembles_noms_effets(
+            nom, noms_effets_allies, noms_effets_adverses
+        )
+        noms_dependances_pratiques_allies = (
+            effet_pratique.dependances.all_dependances_allies()
+        )
         effets_pratiques_allies_dependants = [
             dict_effet_pratique[nom] for nom in noms_dependances_pratiques_allies
         ]
@@ -213,14 +217,14 @@ def get_dict_effet_pratique_avant_ckeck_is_valide(
 
 def get_ensemble_des_effet_pratique_valide_apres_check(
     noms_effets_allies: Set[str],
-    noms_effets_adverses: Set[set] = set(),
+    noms_effets_adverses: Set[str] = set(),
 ) -> Set[str]:
-    set_effet_pratique_valide: Set[str] = set()
     dict_effet_pratique = get_dict_effet_pratique_avant_ckeck_is_valide(
         noms_effets_allies, noms_effets_adverses
     )
+    ensemble_des_effets_valides_apres_check: Set[str] = set()
     for nom, effet_pratique in dict_effet_pratique.items():
         effet_pratique.check_is_valide()
         if effet_pratique.is_valide:
-            set_effet_pratique_valide.add(nom)
-    return set_effet_pratique_valide
+            ensemble_des_effets_valides_apres_check.add(nom)
+    return ensemble_des_effets_valides_apres_check

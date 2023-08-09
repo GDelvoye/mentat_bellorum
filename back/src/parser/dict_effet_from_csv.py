@@ -1,8 +1,8 @@
 import os
+import pickle
 from typing import Set
 
 import pandas as pd
-import pickle
 
 from back.src.effet.effet import Dependances, EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
@@ -61,5 +61,5 @@ dict_effet = create_dict_effet()
 
 
 def dump():
-    with open('filename.pickle', 'wb') as handle:
+    with open("filename.pickle", "wb") as handle:
         pickle.dump(dict_effet, handle, protocol=pickle.HIGHEST_PROTOCOL)

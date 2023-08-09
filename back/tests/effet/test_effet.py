@@ -1,14 +1,11 @@
-import pytest
-
 from typing import Set
 
+import pytest
+
 from back.src.effet.effet import (
-    Dependances,
-    EffetPratique,
-    get_dependances_from_ensembles_noms_effets,
+    Dependances, EffetPratique, get_dependances_from_ensembles_noms_effets,
     get_dict_effet_pratique_avant_ckeck_is_valide,
-    get_ensemble_des_effet_pratique_valide_apres_check,
-)
+    get_ensemble_des_effet_pratique_valide_apres_check)
 from back.src.parser.dict_effet_from_csv import dict_effet
 from back.src.parser.type import EnumEffet
 
@@ -190,10 +187,12 @@ def test_dependances_is_valide_method(
 
 def test_get_dict_effet_pratique_from_liste_nom():
     # Given
-    noms_effets_allies = set([
-        EnumEffet.horde.value,
-        EnumEffet.charge.value,
-    ])
+    noms_effets_allies = set(
+        [
+            EnumEffet.horde.value,
+            EnumEffet.charge.value,
+        ]
+    )
     # When
     result = get_dict_effet_pratique_avant_ckeck_is_valide(
         noms_effets_allies=noms_effets_allies,
@@ -220,23 +219,19 @@ testdata_get_dependances = [
         set(),
         set([EnumEffet.deuxieme_tour.value]),
     ),
-    (
-        EnumEffet.regeneration.value,
-        set(),
-        set(),
-        set()
-    ),
+    (EnumEffet.regeneration.value, set(), set(), set()),
     (
         EnumEffet.regeneration.value,
         set(),
         set([EnumEffet.attaque_enflammee.value]),
-        set([EnumEffet.attaque_enflammee.value])
-    )
+        set([EnumEffet.attaque_enflammee.value]),
+    ),
 ]
 
 
 @pytest.mark.parametrize(
-    "nom, noms_effets_allies, noms_effets_adverses, noms_effets_expected", testdata_get_dependances
+    "nom, noms_effets_allies, noms_effets_adverses, noms_effets_expected",
+    testdata_get_dependances,
 )
 def test_get_dependances_check_all_dependances(
     nom: str,
@@ -254,7 +249,9 @@ def test_get_dependances_check_all_dependances(
 
 def test_get_dependances_suppresseur_allie():
     # Given
-    noms_effets_allies = set([EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value])
+    noms_effets_allies = set(
+        [EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value]
+    )
     # When
     result = get_dependances_from_ensembles_noms_effets(
         EnumEffet.premier_tour.value,
@@ -266,50 +263,60 @@ def test_get_dependances_suppresseur_allie():
 
 testdata_get_set_effet = [
     (
-        set([
-            EnumEffet.charge.value,
-            EnumEffet.premier_tour.value,
-        ]),
+        set(
+            [
+                EnumEffet.charge.value,
+                EnumEffet.premier_tour.value,
+            ]
+        ),
         set(),
-        set([
-            EnumEffet.charge.value,
-            EnumEffet.premier_tour.value,
-        ]),
+        set(
+            [
+                EnumEffet.charge.value,
+                EnumEffet.premier_tour.value,
+            ]
+        ),
     ),
     (
-        set([
-            EnumEffet.horde.value,
-            EnumEffet.charge.value,
-        ]),
+        set(
+            [
+                EnumEffet.horde.value,
+                EnumEffet.charge.value,
+            ]
+        ),
         set(),
         set(),
     ),
     (
-        set([
-            EnumEffet.horde.value,
-            EnumEffet.charge.value,
-            EnumEffet.premier_tour.value,
-        ]),
+        set(
+            [
+                EnumEffet.horde.value,
+                EnumEffet.charge.value,
+                EnumEffet.premier_tour.value,
+            ]
+        ),
         set(),
-        set([
-            EnumEffet.horde.value,
-            EnumEffet.charge.value,
-            EnumEffet.premier_tour.value,
-        ]),
+        set(
+            [
+                EnumEffet.horde.value,
+                EnumEffet.charge.value,
+                EnumEffet.premier_tour.value,
+            ]
+        ),
     ),
     (
-        set([
-            EnumEffet.horde.value,
-            EnumEffet.premier_tour.value,
-            EnumEffet.deuxieme_tour.value,
-        ]),
+        set(
+            [
+                EnumEffet.horde.value,
+                EnumEffet.premier_tour.value,
+                EnumEffet.deuxieme_tour.value,
+            ]
+        ),
         set(),
         set([EnumEffet.deuxieme_tour.value]),
     ),
     (
-        set([
-            EnumEffet.regeneration.value
-        ]),
+        set([EnumEffet.regeneration.value]),
         set([EnumEffet.attaque_enflammee.value]),
         set(),
     ),
@@ -317,7 +324,8 @@ testdata_get_set_effet = [
 
 
 @pytest.mark.parametrize(
-    "noms_effets_allies, noms_effets_adverses, noms_effets_expected", testdata_get_set_effet
+    "noms_effets_allies, noms_effets_adverses, noms_effets_expected",
+    testdata_get_set_effet,
 )
 def test_get_set_effet_pratique_valide_from_liste_nom(
     noms_effets_allies: Set[str],
@@ -325,6 +333,7 @@ def test_get_set_effet_pratique_valide_from_liste_nom(
     noms_effets_expected: Set[str],
 ):
     result = get_ensemble_des_effet_pratique_valide_apres_check(
-        noms_effets_allies, noms_effets_adverses,
+        noms_effets_allies,
+        noms_effets_adverses,
     )
     assert result == noms_effets_expected
