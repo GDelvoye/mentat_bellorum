@@ -165,9 +165,7 @@ def get_dict_effet_pratique_from_liste_nom(
 ) -> dict[str, EffetPratique]:
     dict_effet_pratique = {nom: EffetPratique(nom) for nom in set_nom}
     for nom, effet_pratique in dict_effet_pratique.items():
-        effet_pratique.dependances = get_dependances(
-            nom, dict_effet_theorique, set_nom
-        )
+        effet_pratique.dependances = get_dependances(nom, dict_effet_theorique, set_nom)
         set_noms_dependances_pratiques = effet_pratique.dependances.all_dependances()
         liste_effet_pratique_dependance = [
             dict_effet_pratique[nom] for nom in set_noms_dependances_pratiques

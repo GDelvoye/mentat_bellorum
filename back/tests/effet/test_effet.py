@@ -1,3 +1,5 @@
+import pytest
+
 from back.src.effet.effet import (Dependances, EffetPratique, get_dependances,
                                   get_dict_effet_pratique_from_liste_nom,
                                   get_set_effet_pratique_valide_from_liste_nom)
@@ -158,66 +160,40 @@ def test_get_dict_effet_pratique_from_liste_nom():
     assert len(result.set_des_effets_pratiques_dependances) == 1
 
 
-def test_get_set_effet_pratique_valide_from_liste_nom_set_sans_recurrence():
-    # Given
-    liste_nom = [
+testdata_get_dependances = [
+    (
         EnumEffet.charge.value,
+        [EnumEffet.charge.value, EnumEffet.premier_tour.value],
+        [EnumEffet.premier_tour.value],
+    ),
+    (
+        EnumEffet.charge.value,
+        [EnumEffet.charge.value, EnumEffet.premier_tour.value],
+        [EnumEffet.premier_tour.value],
+    ),
+    (
         EnumEffet.premier_tour.value,
-    ]
+        [EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value],
+        [EnumEffet.deuxieme_tour.value],
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "nom, set_de_noms_allies, liste_expected", testdata_get_dependances
+)
+def test_get_dependances(
+    nom: str,
+    set_de_noms_allies: list[str],
+    liste_expected: list[str],
+):
     dict_effet_theorique = dict_effet
-    # When
-    result = get_set_effet_pratique_valide_from_liste_nom(
-        set_nom=liste_nom,
-        dict_effet_theorique=dict_effet_theorique,
-    )
-    # Then
-    assert result == set(liste_nom)
-
-
-def test_get_set_effet_pratique_valide_from_liste_nom_set_vide():
-    # Given
-    liste_nom = [
-        EnumEffet.horde.value,
-        EnumEffet.charge.value,
-    ]
-    dict_effet_theorique = dict_effet
-    # When
-    result = get_set_effet_pratique_valide_from_liste_nom(
-        set_nom=liste_nom,
-        dict_effet_theorique=dict_effet_theorique,
-    )
-    # Then
-    assert result == set()
-
-
-def test_get_set_effet_pratique_valide_from_liste_nom_set_valide():
-    # Given
-    liste_nom = [
-        EnumEffet.horde.value,
-        EnumEffet.charge.value,
-        EnumEffet.premier_tour.value,
-    ]
-    # When
-    result = get_set_effet_pratique_valide_from_liste_nom(
-        set_nom=liste_nom,
-        dict_effet_theorique=dict_effet,
-    )
-    # Then
-    assert result == set(liste_nom)
-
-
-def test_get_dependance_necessaire_allie():
-    # Given
-    liste_de_noms_allie = [EnumEffet.charge.value, EnumEffet.premier_tour.value]
-    dict_effet_theorique = dict_effet
-    # When
     result = get_dependances(
-        EnumEffet.charge.value,
+        nom,
         dict_effet_theorique=dict_effet_theorique,
-        set_de_noms_allie=liste_de_noms_allie,
-    )
-    # Then
-    assert result.necessaire_allie == set([EnumEffet.premier_tour.value])
+        set_de_noms_allie=set(set_de_noms_allies),
+    ).all_dependances()
+    assert result == set(liste_expected)
 
 
 def test_get_dependance_suppresseur_allie():
@@ -234,17 +210,56 @@ def test_get_dependance_suppresseur_allie():
     assert result.suppresseur_allie == set([EnumEffet.deuxieme_tour.value])
 
 
-def test_get_set_effet_pratique_valide_from_liste_nom_deuxieme_et_premier_tour():
-    # Given
-    liste_nom = [
-        EnumEffet.horde.value,
-        EnumEffet.premier_tour.value,
-        EnumEffet.deuxieme_tour.value,
-    ]
-    # When
+testdata_get_set_effet = [
+    (
+        [
+            EnumEffet.charge.value,
+            EnumEffet.premier_tour.value,
+        ],
+        [
+            EnumEffet.charge.value,
+            EnumEffet.premier_tour.value,
+        ],
+    ),
+    (
+        [
+            EnumEffet.horde.value,
+            EnumEffet.charge.value,
+        ],
+        [],
+    ),
+    (
+        [
+            EnumEffet.horde.value,
+            EnumEffet.charge.value,
+            EnumEffet.premier_tour.value,
+        ],
+        [
+            EnumEffet.horde.value,
+            EnumEffet.charge.value,
+            EnumEffet.premier_tour.value,
+        ],
+    ),
+    (
+        [
+            EnumEffet.horde.value,
+            EnumEffet.premier_tour.value,
+            EnumEffet.deuxieme_tour.value,
+        ],
+        [EnumEffet.deuxieme_tour.value],
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "liste_effet_allie, liste_effet_expected", testdata_get_set_effet
+)
+def test_get_set_effet_pratique_valide_from_liste_nom2(
+    liste_effet_allie: list[str],
+    liste_effet_expected: list[str],
+):
+    dict_effet_theorique = dict_effet
     result = get_set_effet_pratique_valide_from_liste_nom(
-        set_nom=liste_nom,
-        dict_effet_theorique=dict_effet,
+        liste_effet_allie, dict_effet_theorique
     )
-    # Then
-    assert result == set([EnumEffet.deuxieme_tour.value])
+    assert result == set(liste_effet_expected)
