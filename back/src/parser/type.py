@@ -1,14 +1,20 @@
 from enum import Enum
 
 
+class EnumTypeEffet(Enum):
+    arme = "arme"
+    armure = "armure"
+    objet = "objet"
+    effet = "effet"
+
+
 class EnumEffet(Enum):
     arme_a_deux_mains = "arme_a_deux_mains"
     attaque_empoisonnee = "attaque_empoisonnee"
     attaque_enflammee = "attaque_enflammee"
     attaque_enflammee_double_degat = "attaque_enflammee_double_degat"
     attaque_de_dos = "attaque_de_dos"
-    attaquee_de_dos = "attaquee_de_dos"
-    attaquee_de_flanc = "attaquee_de_flanc"
+    attaque_de_flanc = "attaque_de_flanc"
     aura = "aura"
     bonus_de_rang = "bonus_de_rang"
     charge = "charge"
@@ -17,6 +23,7 @@ class EnumEffet(Enum):
     coup_fatal = "coup_fatal"
     degat_magique = "degat_magique"
     ethere = "ethere"
+    ethere_insensible_degat = "ethere_insensible_degat"
     flanquee = "flanquee"
     frappe_en_dernier = "frappe_en_dernier"
     frappe_en_premier = "frappe_en_premier"

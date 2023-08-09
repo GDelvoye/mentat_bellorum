@@ -12,6 +12,11 @@ csv_file = os.path.join("back", "data", "effets.csv")
 df_effet = pd.read_csv(csv_file)
 
 
+def recover_type_from_cell(nom_effet, nom_colonne):
+    df_nom = df_effet[df_effet["nom"] == nom_effet]
+    return df_nom[nom_colonne].values[0]
+
+
 def recover_set_from_cell(nom_effet: str, nom_colonne: str) -> Set:
     df_nom = df_effet[df_effet["nom"] == nom_effet]
     if df_nom.isnull()[nom_colonne].values[0]:
@@ -45,6 +50,7 @@ def create_effet(nom_effet: str):
                 set(liste_suppresseur_adverse),
                 set(liste_effet_inclu),
             ),
+            recover_type_from_cell(nom_effet, "type")
         )
     else:
         print(f"{nom_effet} pas dans csv")

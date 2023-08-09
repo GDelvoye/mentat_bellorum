@@ -84,6 +84,7 @@ class EffetTheorique:
     modificateur_carac_allie: Caracteristique
     modificateur_carac_adverse: Caracteristique
     dependances: Dependances
+    type_effet: str
 
 
 class EffetPratique:
