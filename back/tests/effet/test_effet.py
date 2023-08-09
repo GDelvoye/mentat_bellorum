@@ -194,11 +194,9 @@ def test_get_dict_effet_pratique_from_liste_nom():
         EnumEffet.horde.value,
         EnumEffet.charge.value,
     ])
-    dict_effet_theorique = dict_effet
     # When
     result = get_dict_effet_pratique_from_liste_nom(
         noms_effets_allies=noms_effets_allies,
-        dict_effet_theorique=dict_effet_theorique,
     )[EnumEffet.horde.value]
     assert len(result.set_des_effets_pratiques_dependances) == 1
 
@@ -230,10 +228,8 @@ def test_get_dependances(
     noms_effets_allies: Set[str],
     noms_effets_expected: Set[str],
 ):
-    dict_effet_theorique = dict_effet
     result = get_dependances(
         nom,
-        dict_effet_theorique=dict_effet_theorique,
         noms_effets_allies=noms_effets_allies,
     ).all_dependances()
     assert result == noms_effets_expected
@@ -242,11 +238,9 @@ def test_get_dependances(
 def test_get_dependances_suppresseur_allie():
     # Given
     noms_effets_allies = set([EnumEffet.deuxieme_tour.value, EnumEffet.premier_tour.value])
-    dict_effet_theorique = dict_effet
     # When
     result = get_dependances(
         EnumEffet.premier_tour.value,
-        dict_effet_theorique=dict_effet_theorique,
         noms_effets_allies=noms_effets_allies,
     )
     # Then
@@ -297,12 +291,11 @@ testdata_get_set_effet = [
 @pytest.mark.parametrize(
     "noms_effets_allies, noms_effets_expected", testdata_get_set_effet
 )
-def test_get_set_effet_pratique_valide_from_liste_nom2(
+def test_get_set_effet_pratique_valide_from_liste_nom(
     noms_effets_allies: Set[str],
     noms_effets_expected: Set[str],
 ):
-    dict_effet_theorique = dict_effet
     result = get_set_effet_pratique_valide_from_liste_nom(
-        set(noms_effets_allies), dict_effet_theorique
+        set(noms_effets_allies),
     )
     assert result == noms_effets_expected

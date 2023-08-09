@@ -2,10 +2,12 @@ import os
 from typing import Set
 
 import pandas as pd
+import pickle
 
 from back.src.effet.effet import Dependances, EffetTheorique
 from back.src.figurine.caracteristique import Caracteristique
 
+pickle_file = os.path.join("back", "data", "dict_effet.pkl")
 csv_file = os.path.join("back", "data", "effets.csv")
 df_effet = pd.read_csv(csv_file)
 
@@ -56,3 +58,8 @@ def create_dict_effet():
 
 
 dict_effet = create_dict_effet()
+
+
+def dump():
+    with open('filename.pickle', 'wb') as handle:
+        pickle.dump(dict_effet, handle, protocol=pickle.HIGHEST_PROTOCOL)
