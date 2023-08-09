@@ -146,15 +146,15 @@ class EffetPratique:
 def get_dependances(
     nom: str,
     dict_effet_theorique: dict[str, EffetTheorique],
-    set_de_noms_allie: Set[str],
-    set_de_noms_adverse: Set[str] = set(),
+    noms_effets_allies: Set[str],
+    noms_effets_adverses: Set[str] = set(),
 ) -> Dependances:
     effet_theorique: EffetTheorique = dict_effet_theorique[nom]
     dependances_theoriques: Dependances = effet_theorique.dependances
     dependances_pratique = Dependances(
-        set(set_de_noms_allie).intersection(dependances_theoriques.necessaire_allie),
+        noms_effets_allies.intersection(dependances_theoriques.necessaire_allie),
         set(),
-        set(set_de_noms_allie).intersection(dependances_theoriques.suppresseur_allie),
+        noms_effets_allies.intersection(dependances_theoriques.suppresseur_allie),
         set(),
         set(),
     )
@@ -172,12 +172,12 @@ def get_set_nom_effet_pratique_valide(
 
 
 def get_dict_effet_pratique_from_liste_nom(
-    set_nom: Set[str],
+    noms_effets_allies: Set[str],
     dict_effet_theorique: dict[str, EffetTheorique],
 ) -> dict[str, EffetPratique]:
-    dict_effet_pratique = {nom: EffetPratique(nom) for nom in set_nom}
+    dict_effet_pratique = {nom: EffetPratique(nom) for nom in noms_effets_allies}
     for nom, effet_pratique in dict_effet_pratique.items():
-        effet_pratique.dependances = get_dependances(nom, dict_effet_theorique, set_nom)
+        effet_pratique.dependances = get_dependances(nom, dict_effet_theorique, noms_effets_allies)
         set_noms_dependances_pratiques = effet_pratique.dependances.all_dependances()
         liste_effet_pratique_dependance = [
             dict_effet_pratique[nom] for nom in set_noms_dependances_pratiques
@@ -189,12 +189,12 @@ def get_dict_effet_pratique_from_liste_nom(
 
 
 def get_set_effet_pratique_valide_from_liste_nom(
-    set_nom: Set[str],
+    noms_effets_allies: Set[str],
     dict_effet_theorique: dict[str, EffetTheorique],
 ) -> Set[str]:
     set_effet_pratique_valide: Set[str] = set()
     dict_effet_pratique = get_dict_effet_pratique_from_liste_nom(
-        set_nom, dict_effet_theorique
+        noms_effets_allies, dict_effet_theorique
     )
     for nom, effet_pratique in dict_effet_pratique.items():
         effet_pratique.check_is_valide(dict_effet_theorique)
